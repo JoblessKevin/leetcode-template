@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    # Cloud Server of the github actions
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout source code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Set up Java 23 (Temurin distribution) with Gradle cache enabled
+      - name: Set up Java 23 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '23'
+          cache: gradle
+
+      # Install and configure Gradle
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      # Run unit tests
+      - name: Run tests
+        run: ./gradlew test --no-daemon
+
+      # Run code style check using Spotless
+      - name: Check code style
+        run: ./gradlew spotlessCheck --no-daemon
