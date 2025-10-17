@@ -1,21 +1,22 @@
-package templates.recursive;
+package main.java.templates.recursive;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class LetterCombinationsofaPhoneNumber {
     private static final String[] MAP = {
         "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"
     };
 
-    public List<String> letterCombinations(String digits) {
-        List<String> result = new ArrayList<>();
-        if (digits == null || digits.isEmpty()) return result;
+    // public List<String> letterCombinations(String digits) {
+    //     List<String> result = new ArrayList<>();
+    //     if (digits == null || digits.isEmpty()) return result;
 
-        backtrack(digits, 0, new StringBuilder(), result);
-        return result;
-    }
+    //     backtrack(digits, 0, new StringBuilder(), result);
+    //     return result;
+    // }
 
     private void backtrack(String digits, int idx, StringBuilder path, List<String> result) {
         if (idx == digits.length()) {
@@ -48,6 +49,40 @@ class LetterCombinationsofaPhoneNumber {
         }
 
         return result;
+    }
+
+    /** Improved Stream API */
+    public List<String> letterCombinations(String digits) {
+        if (digits == null || digits.length() == 0) return Collections.emptyList();
+
+        List<StringBuilder> result = new ArrayList<>();
+        result.add(new StringBuilder());
+
+        for (char ch : digits.toCharArray()) {
+            String letters = MAP[ch - '0'];
+            if (letters.isEmpty()) continue;
+
+            result = result.stream()
+                           .flatMap(sb -> letters.chars()
+                                                 .mapToObj(c -> new StringBuilder(sb).append((char) c)))
+                           .collect(Collectors.toList());
+        }
+
+        return result.stream().map(StringBuilder::toString).collect(Collectors.toList());
+    }
+
+    /** ----------------Test Case--------------------- */
+    public static void main(String[] args) {
+        LetterCombinationsofaPhoneNumber soluiton = new LetterCombinationsofaPhoneNumber();
+
+        String[] tests = {"23", "2", "79", "234", ""};
+
+        for (String digits : tests) {
+            List<String> result = soluiton.letterCombinations(digits);
+            System.out.println("Input: " + digits);
+            System.out.println("Output: " + result);
+            System.out.println("----------------------------");
+        }
     }
 }
 
