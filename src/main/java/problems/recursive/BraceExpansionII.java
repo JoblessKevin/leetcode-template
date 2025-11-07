@@ -1,4 +1,4 @@
-package problems.recursive;
+package main.java.problems.recursive;
 import java.util.*;
 
 
@@ -74,6 +74,17 @@ class BraceExpansionII {
 
 
 /** ========== Optimize solution ========== */
+/**
+ * splits(expression) 會把最外層以 , 切成多段 split，每段各自代表一個 term
+ * 如果只有一段 split，代表 expression 沒有逗號，可以直接處理乘法 (concatenation)
+ * 處理乘法時，從左到右掃描 expression，遇到字母就直接加入結果，遇到 { 就找出對應的 }，把中間的子 expression 遞迴處理後再做乘法
+ * 如果有多段 split，代表 expression 有逗號，可以把每段 split 遞迴處理後合併結果 (union)
+ * ============= Explanation =============
+ * braceExpansionII：決定走「連接」或「聯集」；前者線性掃描因子、後者遞迴合併結果。
+ * splits：一次線性掃描找最外層逗號切段，不切括號內。
+ * doMulti：兩集合的笛卡兒積（連接），並排序。
+ * findClose：從 st 的 { 出發，找對應的 }，只在當層匹配。
+ */
 class Solution {
     public List<String> braceExpansionII(String expression) {
         List<String> splits = splits(expression);
@@ -183,5 +194,49 @@ class Solution {
             i++;
         }
         return i;
+    }
+
+    /** Test Data */
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+
+        // 測試組 1：基本功能測試
+        test(sol, "{a,b}{c,{d,e}}");          // 基本巢狀
+        test(sol, "{{a,z},a{b,c},{ab,z}}");   // LeetCode 經典題目案例
+        test(sol, "{a,b}c{d,e}f");            // 混合字母 + 括號
+        test(sol, "abcd");                    // 單純字母串
+        test(sol, "{a,b,c}");                 // 單層 union
+
+        // 測試組 2：巢狀層級深一點
+        test(sol, "{a,{b,{c,{d,e}}}}");
+        test(sol, "{x,{a,b}{c,{d,e}}}");
+        test(sol, "{a,b}{c,d}{e,f}");
+
+        // 測試組 3：多層連接 + union
+        test(sol, "{a,b}{c,{d,e}}{f,g}");
+        test(sol, "{a,b}{c,d}{e,f}{g,h}");
+
+        // 測試組 4：大型組合測試（性能壓力）
+        String big = "{" + "a,b,c,d,e,f,g,h,i,j" + "}{"
+                   + "k,l,m,n,o,p,q,r,s,t" + "}{"
+                   + "u,v,w,x,y,z" + "}";
+        test(sol, big); // 10 * 10 * 6 = 600 組合
+
+        // 測試組 5：超大型壓測（慎用）
+        // 可開測看看 runtime 差距
+        // String huge = "{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t}"
+        //              + "{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t}";
+        // test(sol, huge); // 20 * 20 = 400 組合
+    }
+
+    private static void test(Solution sol, String exp) {
+        long start = System.nanoTime();
+        List<String> res = sol.braceExpansionII(exp);
+        long end = System.nanoTime();
+        System.out.println("Expression: " + exp);
+        System.out.println("Result: " + res);
+        System.out.println("Count: " + res.size());
+        System.out.printf("Time: %.3f ms%n", (end - start) / 1_000_000.0);
+        System.out.println("=".repeat(60));
     }
 }
