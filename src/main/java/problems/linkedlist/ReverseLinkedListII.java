@@ -25,10 +25,10 @@ public class ReverseLinkedListII {
         ListNode prev = null;
 
         for (int i = left; i <= right; i++) {
-            ListNode next = curr.next;
+            ListNode temp = curr.next;
             curr.next = prev;
             prev = curr;
-            curr = next;
+            curr = temp;
         }
 
         before.next = prev;
