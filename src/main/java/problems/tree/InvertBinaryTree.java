@@ -1,4 +1,9 @@
-package main.java.problems.tree;
+package problems.tree;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class InvertBinaryTree {
     public class TreeNode {
@@ -19,12 +24,12 @@ public class InvertBinaryTree {
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
         while (!queue.isEmpty()) {
-            TreeNode node = queue.poll();
-            TreeNode temp = node.left;
-            node.left = node.right;
-            node.right = temp;
-            if (node.left != null) queue.offer(node.left);
-            if (node.right != null) queue.offer(node.right);
+            TreeNode curr = queue.poll();
+            TreeNode temp = curr.left;
+            curr.left = curr.right;
+            curr.right = temp;
+            if (curr.left != null) queue.offer(curr.left);
+            if (curr.right != null) queue.offer(curr.right);
         }
 
         return root;
@@ -47,13 +52,13 @@ public class InvertBinaryTree {
         Deque<TreeNode> stack = new ArrayDeque<>();
         stack.push(root);
         while(!stack.isEmpty()) {
-            TreeNode node = stack.pop();
-            TreeNode temp = node.left;
-            node.left = node.right;
-            node.right = temp;
+            TreeNode curr = stack.pop();
+            TreeNode temp = curr.left;
+            curr.left = curr.right;
+            curr.right = temp;
 
-            if (node.left != null) stack.push(node.left);
-            if (node.right != null) stack.push(node.right);
+            if (curr.left != null) stack.push(curr.left);
+            if (curr.right != null) stack.push(curr.right);
         }
 
         return root;
@@ -86,9 +91,9 @@ public class InvertBinaryTree {
         System.out.println("\n--------------------------");
 
         // 測試方法 (這裡你可以切換測試 BFS, DFS 或 recursive)
-        // solution.invertTree_BFS(root);
+        solution.invertTree_BFS(root);
         // solution.invertTree_recursive(root);
-        solution.invertTree_DFS(root);
+        // solution.invertTree_DFS(root);
 
         System.out.println("翻轉後二元樹 (Level Order):");
         // 預期結果: [4, 7, 2, 9, 6, 3, 1]
