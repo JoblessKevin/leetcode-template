@@ -21,7 +21,8 @@ public class InvertBinaryTree {
 
     public TreeNode invertTree_BFS(TreeNode root) {
         if (root == null) return null;
-        Queue<TreeNode> queue = new LinkedList<>();
+        // Queue<TreeNode> queue = new LinkedList<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
         queue.offer(root);
         while (!queue.isEmpty()) {
             TreeNode curr = queue.poll();
