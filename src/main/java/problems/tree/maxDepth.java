@@ -1,5 +1,7 @@
 package problems.tree;
 
+import java.util.Queue;
+
 public class maxDepth {
     static TreeNode {
         int val;
@@ -19,7 +21,12 @@ public class maxDepth {
     //     return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
     // }
 
-    public int maxDepth(TreeNode root) {
+    public int maxDepth_DFS(TreeNode root) {
+        return root == null ? 0 :
+            Math.max(maxDepth_DFS(root.left), maxDepth_DFS(root.right)) + 1;
+    }
+
+    public int maxDepth_BFS(TreeNode root) {
         if (root == null) return 0;
 
         Queue<TreeNode> queue = new ArrayDeque<>();
@@ -63,7 +70,7 @@ public class maxDepth {
 
         // 4. 執行測試
         Solution solution = new Solution();
-        int result = solution.maxDepth(root);
+        int result = solution.maxDepth_DFS(root);
 
         // 5. 輸出結果
         System.out.println("測試案例: [3, 9, 20, null, null, 15, 7]");
@@ -79,5 +86,34 @@ public class maxDepth {
         // 額外測試: 空樹的情況
         System.out.println("\n--- 額外測試: 空樹 ---");
         System.out.println("深度: " + solution.maxDepth(null)); // 應該印出 0
+    }
+
+    public int maxDepth_doubleStack(TreeNode root) {
+        if (root == null) return 0;
+
+        Deque<TreeNode> nodeStack = new ArrayDeque<>();
+        Deque<Integer> depthStack = new ArrayDeque<>();
+
+        nodeStack.push(root);
+        depthStack.push(1);
+        int max = 0;
+
+        while(!nodeStack.isEmpty()) {
+            TreeNode node = nodeStack.pop();
+            int currentDepth = depthStack.pop();
+            max = Math.max(max, currentDepth);
+
+            if (node.right != null) {
+                nodeStack.push(node.right);
+                depthStack.push(currentDepth + 1);
+            }
+
+            if (node.left != null) {
+                nodeStack.push(node.left);
+                depthStack.push(currentDepth + 1);
+            }
+        }
+
+        return max;
     }
 }
