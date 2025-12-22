@@ -1,9 +1,11 @@
 package problems.tree;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Queue;
 
-public class maxDepth {
-    static TreeNode {
+public class MaxDepth {
+    static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
@@ -14,12 +16,13 @@ public class maxDepth {
             this.val = val;
             this.left = left;
             this.right = right;
+        }
     }
 
-    // public int maxDepth(TreeNode root) {
-    //     if (root == null) return 0;
-    //     return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
-    // }
+    public int maxDepth(TreeNode root) {
+        if (root == null) return 0;
+        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+    }
 
     public int maxDepth_DFS(TreeNode root) {
         return root == null ? 0 :
@@ -69,7 +72,7 @@ public class maxDepth {
         root.right.right = new TreeNode(7);
 
         // 4. 執行測試
-        Solution solution = new Solution();
+        MaxDepth solution = new MaxDepth();
         int result = solution.maxDepth_DFS(root);
 
         // 5. 輸出結果

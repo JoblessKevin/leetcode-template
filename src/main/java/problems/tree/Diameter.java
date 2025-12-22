@@ -1,3 +1,5 @@
+package problems.tree;
+
 public class Diameter {
     static class TreeNode {
         int val;

@@ -1,4 +1,4 @@
-package main.java.templates.cartesianProduct;
+package templates.cartesianProduct;
 
 import java.util.*;
 

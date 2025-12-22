@@ -1,9 +1,7 @@
-package main.java.problems.linkedlist;
+package problems.linkedlist;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import main.java.problems.linkedlist.LFUCache.DoublyLinkedList;
 
 /**
  * Your LFUCache object will be instantiated and called as such:

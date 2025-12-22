@@ -1,9 +1,7 @@
-package main.java.problems.linkedlist;
+package problems.linkedlist;
 
-import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Queue;
 
 class LRUCache {
     class Node {

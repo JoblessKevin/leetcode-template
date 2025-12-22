@@ -1,4 +1,4 @@
-package main.java.problems.recursive;
+package problems.recursive;
 import java.util.*;
 
 

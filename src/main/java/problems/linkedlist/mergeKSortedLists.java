@@ -1,4 +1,4 @@
-package main.java.problems.linkedlist;
+package problems.linkedlist;
 
 public class mergeKSortedLists {
     public static class ListNode {
