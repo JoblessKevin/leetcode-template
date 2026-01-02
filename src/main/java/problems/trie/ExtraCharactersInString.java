@@ -1,5 +1,8 @@
 package problems.trie;
 
+/**
+ * Trie + DP
+ */
 public class ExtraCharactersInString {
     private static class TrieNode {
         private TrieNode[] children;
