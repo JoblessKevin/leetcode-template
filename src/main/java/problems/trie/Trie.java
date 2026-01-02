@@ -1,7 +1,7 @@
 package problems.trie;
 
 class Trie {
-    public class TrieNode {
+    private static class TrieNode {
         private TrieNode[] children;
         private boolean isEndOfWord;
 
