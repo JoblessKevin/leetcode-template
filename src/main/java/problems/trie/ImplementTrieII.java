@@ -5,6 +5,12 @@ public class ImplementTrieII {
         TrieNode[] children = new TrieNode[26];
         int wordCount = 0; // 記錄完整單字的數量
         int prefixCount = 0; // 記錄經過此節點的單字數量 (前綴數
+
+        public TrieNode() {
+            this.children = new TrieNode[26];
+            this.wordCount = 0;
+            this.prefixCount = 0;
+        }
     }
 
     private TrieNode root;
