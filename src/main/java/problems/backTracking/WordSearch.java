@@ -1,4 +1,4 @@
-package problems.backTracking;
+package problems.backtracking;
 
 /**
  * DFS + Backtracking

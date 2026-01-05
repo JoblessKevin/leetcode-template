@@ -1,4 +1,4 @@
-package problems.backTracking;
+package problems.backtracking;
 
 import java.util.ArrayList;
 import java.util.List;
