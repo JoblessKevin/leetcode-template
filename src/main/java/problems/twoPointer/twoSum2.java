@@ -2,7 +2,7 @@ package problems.twoPointer;
 
 import java.util.Arrays;
 
-public class twoSum2 {
+public class TwoSum2 {
     public int[] twoSum(int[] numbers, int target) {
         int n = numbers.length;
         for (int i = 0; i < n; i++) {
@@ -16,7 +16,7 @@ public class twoSum2 {
 
     // Test Data
     public static void main(String[] args) {
-        var s = new twoSum2();
+        TwoSum2 s = new TwoSum2();
 
         // Test 1
         int[] ans1 = s.twoSum(new int[]{2,7,11,15}, 9);

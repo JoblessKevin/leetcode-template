@@ -1,6 +1,6 @@
 package problems.linkedlist;
 
-public class mergeKSortedLists {
+public class MergeKSortedLists {
     public static class ListNode {
         int val;
         ListNode next;
@@ -36,7 +36,7 @@ public class mergeKSortedLists {
     }
 
     public static void main(String[] args) {
-        mergeKSortedLists s = new mergeKSortedLists();
+        MergeKSortedLists s = new MergeKSortedLists();
 
         // 測試用 list
         // list1: 1 -> 4 -> 5
