@@ -4,9 +4,18 @@ public class MergeKSortedLists {
     public static class ListNode {
         int val;
         ListNode next;
-        ListNode() {}
-        ListNode(int val) { this.val = val; }
-        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
     }
 
     public ListNode mergeKLists_iteration(ListNode[] lists) {
@@ -43,23 +52,23 @@ public class MergeKSortedLists {
         // list2: 1 -> 3 -> 4
         // list3: 2 -> 6
         // list4: null
-        ListNode l1 = buildList(new int[]{1, 4, 5});
-        ListNode l2 = buildList(new int[]{1, 3, 4});
-        ListNode l3 = buildList(new int[]{2, 6});
+        ListNode l1 = buildList(new int[] { 1, 4, 5 });
+        ListNode l2 = buildList(new int[] { 1, 3, 4 });
+        ListNode l3 = buildList(new int[] { 2, 6 });
         ListNode l4 = null; // 測試 null 處理
 
-        ListNode[] lists = {l1, l2, l3, l4};
+        ListNode[] lists = { l1, l2, l3, l4 };
 
         ListNode result = s.mergeKLists_iteration(lists);
         printList(result);
     }
 
-
     // ----------------------------
     // 工具方法 - 建立鏈結串列
     // ----------------------------
     private static ListNode buildList(int[] arr) {
-        if (arr == null || arr.length == 0) return null;
+        if (arr == null || arr.length == 0)
+            return null;
         ListNode head = new ListNode(arr[0]);
         ListNode cur = head;
         for (int i = 1; i < arr.length; i++) {
