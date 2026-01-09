@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * N: 待排序的數字總數 (Number of elements), K: 桶子的數量 (Number of buckets)
+ * Time Complexity
+ * Best: O(N + K)
+ * Average: O(N + K)
+ * Worst: O(N ^ 2)
+ * Space Complexity: O(N + K)
+ */
 public class BucketSort {
     public void bucketSort(int[] nums) {
         // 0. 特殊狀況處理
