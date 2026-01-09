@@ -1,4 +1,4 @@
-package main.java.templates.array;
+package templates.array;
 
 import java.util.ArrayList;
 import java.util.Collections;
