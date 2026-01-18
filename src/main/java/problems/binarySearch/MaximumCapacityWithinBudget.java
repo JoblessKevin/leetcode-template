@@ -71,4 +71,60 @@ public class MaximumCapacityWithinBudget {
         }
         return ans;
     }
+
+    // ==========================================
+    // Test case
+    // ==========================================
+    public static void main(String[] args) {
+        MaximumCapacityWithinBudget solver = new MaximumCapacityWithinBudget();
+
+        System.out.println("=== 開始測試 MaximumCapacityWithinBudget ===\n");
+
+        // Test Case 1: LeetCode 範例 (一般情況)
+        // 選 (Cost 3, Cap 5) 和 (Cost 1, Cap 7) -> Cost 4 < 13, Total Cap 12
+        runTest(solver, new int[] {1, 7, 3}, new int[] {7, 3, 5}, 13, 12, "Test Case 1 (Standard)");
+
+        // Test Case 2: 嚴格小於 Budget 的邊界測試
+        // 之前卡住的測資：Cost 4+3 = 7 < 8 (合法), Cost 5+3 = 8 !< 8 (不合法)
+        // 應選 (Cost 4, Cap 1) + (Cost 3, Cap 7) = Cap 8
+        runTest(solver, new int[] {4, 8, 5, 3}, new int[] {1, 5, 2, 7}, 8, 8,
+                                        "Test Case 2 (Boundary: Strictly Less)");
+
+        // Test Case 3: 單選一個比選兩個好
+        // 預算 10，有一個神機 Cost 9 Cap 100，其他都很爛
+        // 選 (9) -> Cap 100. 如果硬湊兩個可能反而變小或買不起
+        runTest(solver, new int[] {9, 1, 1}, new int[] {100, 1, 1}, 10, 100,
+                                        "Test Case 3 (Single Best)");
+
+        // Test Case 4: 什麼都買不起
+        // 預算 5，最便宜的要 5 (不滿足 < 5)
+        runTest(solver, new int[] {5, 10, 20}, new int[] {10, 20, 30}, 5, 0,
+                                        "Test Case 4 (Too Poor)");
+
+        // Test Case 5: 預算超多，選最強的兩個
+        runTest(solver, new int[] {1, 2, 3, 4}, new int[] {10, 20, 30, 40}, 100, 70, // 30 + 40
+                                        "Test Case 5 (Rich Budget)");
+    }
+
+    public static void runTest(MaximumCapacityWithinBudget solver, int[] costs, int[] capacity,
+                                    int budget, int expected, String testName) {
+        System.out.println("Running: " + testName);
+        System.out.println("Costs: " + Arrays.toString(costs));
+        System.out.println("Capacity: " + Arrays.toString(capacity));
+        System.out.println("Budget: " + budget);
+
+        long startTime = System.nanoTime();
+        int result = solver.maxCapacity(costs, capacity, budget);
+        long endTime = System.nanoTime();
+
+        System.out.println("Expected: " + expected + ", Got: " + result);
+
+        if (result == expected) {
+            double timeInMs = (endTime - startTime) / 1_000_000.0;
+            System.out.println("PASS (Time: " + timeInMs + " ms)");
+        } else {
+            System.err.println("FAIL");
+        }
+        System.out.println("--------------------------------------------------");
+    }
 }
