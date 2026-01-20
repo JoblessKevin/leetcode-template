@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 這題的最佳解應該是要排序，如同 CombinationSum II， 但是這題的 constraints 很小，所以下面的作法在 leetcode 測試是比較快的
+ * 兩者時間複雜度相同，最壞的情況下就是完全沒有剪枝(Pruning)的機會
+ */
 public class CombinationSum {
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
