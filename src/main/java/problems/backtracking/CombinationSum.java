@@ -69,7 +69,7 @@ public class CombinationSum {
         System.out.println();
 
         // 測試案例 2: 另一組數據
-        int[] candidates2 = {2, 3, 5};
+        int[] candidates2 = {5, 2, 3};
         int target2 = 8;
         System.out.println("=== Test Case 2 ===");
         System.out.println("Candidates: " + Arrays.toString(candidates2) + ", Target: " + target2);
