@@ -127,4 +127,85 @@ public class NumberOfIslands {
             }
         }
     }
+
+    /**
+     * DSU
+     */
+    private static class DSU {
+        int[] parent;
+        int[] rank;
+        int count;
+
+        public DSU(char[][] grid) {
+            int m = grid.length;
+            int n = grid[0].length;
+            parent = new int[m * n];
+            rank = new int[m * n];
+            count = 0;
+
+            for (int r = 0; r < m; r++) {
+                for (int c = 0; c < n; c++) {
+                    if (grid[r][c] == '1') {
+                        int id = r * n + c;
+                        parent[id] = id;
+                        count++;
+                    }
+                }
+            }
+        }
+
+        public int find(int i) {
+            if (parent[i] != i) {
+                parent[i] = find(parent[i]);
+            }
+            return parent[i];
+        }
+
+        public void union(int i, int j) {
+            int rootX = find(i);
+            int rootY = find(j);
+            if (rootX != rootY) {
+                if (rank[rootX] > rank[rootY]) {
+                    parent[rootY] = rootX;
+                } else if (rank[rootX] < rank[rootY]) {
+                    parent[rootX] = rootY;
+                } else {
+                    parent[rootY] = rootX;
+                    rank[rootX]++;
+                }
+                count--;
+            }
+        }
+
+        public int getCount() {
+            return count;
+        }
+    }
+
+    public int numIslands_dsu(char[][] grid) {
+        if (grid == null || grid.length == 0)
+            return 0;
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+        DSU dsu = new DSU(grid);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == '1') {
+                    int id = r * cols + c;
+
+                    if (c + 1 < cols && grid[r][c + 1] == '1') {
+                        dsu.union(id, r * cols + (c + 1));
+                    }
+
+                    if (r + 1 < rows && grid[r + 1][c] == '1') {
+                        dsu.union(id, (r + 1) * cols + c);
+                    }
+                }
+            }
+        }
+
+        return dsu.getCount();
+    }
 }
