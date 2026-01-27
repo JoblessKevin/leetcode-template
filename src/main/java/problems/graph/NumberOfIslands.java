@@ -1,10 +1,52 @@
 package problems.graph;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+/**
+ * DFS: Time O(M*N), Space O(M*N) BFS: Time O(M*N), Space O(min(M, N)) M = rows, N = cols
+ */
 public class NumberOfIslands {
+
+    private static final int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
     /**
-     * Time: O(m * n)
-     * Space: O(m * n)
+     * DFS (Optimal)
      */
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0)
+            return 0;
+
+        int ROWS = grid.length, COLS = grid[0].length;
+        int islands = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    dfs(grid, r, c);
+                    islands++;
+                }
+            }
+        }
+
+        return islands;
+    }
+
+    private void dfs(char[][] grid, int r, int c) {
+        if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == '0') {
+            return;
+        }
+
+        grid[r][c] = '0';
+        for (int[] dir : directions) {
+            dfs(grid, r + dir[0], c + dir[1]);
+        }
+    }
+
+    /**
+     * DFS (original)
+     * @formatter:off
+
     // public int numIslands(char[][] grid) {
     //     if (grid == null || grid.length == 0)
     //         return 0;
@@ -34,40 +76,13 @@ public class NumberOfIslands {
     //     dfs(grid, r, c - 1);
     // }
 
-    private static final int[][] directions = {{1, 0}, {-1, 0},
-                                               {0, 1}, {0, -1}};
+    * @formatter:on
+    */
 
-    public int numIslands(char[][] grid) {
-        int ROWS = grid.length, COLS = grid[0].length;
-        int islands = 0;
-
-        for (int r = 0; r < ROWS; r++) {
-            for (int c = 0; c < COLS; c++) {
-                if (grid[r][c] == '1') {
-                    dfs(grid, r, c);
-                    islands++;
-                }
-            }
-        }
-
-        return islands;
-    }
-
-    private void dfs(char[][] grid, int r, int c) {
-        if (r < 0 || c < 0 || r >= grid.length ||
-            c >= grid[0].length || grid[r][c] == '0') {
-            return;
-        }
-
-        grid[r][c] = '0';
-        for (int[] dir : directions) {
-            dfs(grid, r + dir[0], c + dir[1]);
-        }
-    }
-
-    private static final int[][] DIRECTIONS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-
-    public int numIslands(char[][] grid) {
+    /**
+     * BFS
+     */
+    public int numIslands_bfs(char[][] grid) {
         if (grid == null || grid.length == 0) {
             return 0;
         }
@@ -89,24 +104,24 @@ public class NumberOfIslands {
     }
 
     private void bfs(char[][] grid, int r, int c) {
-        Queue<int[]> queue = new ArrayDeque<>();
-        
-        queue.offer(new int[]{r, c});
+        Queue<Integer> queue = new ArrayDeque<>();
+        int cols = grid[0].length;
+
+        queue.offer(r * cols + c);
         grid[r][c] = '0';
 
         while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
-            int currR = curr[0];
-            int currC = curr[1];
+            int curr = queue.poll();
+            int currR = curr / cols;
+            int currC = curr % cols;
 
-            for (int[] dir : DIRECTIONS) {
+            for (int[] dir : directions) {
                 int newR = currR + dir[0];
                 int newC = currC + dir[1];
-                if (newR >= 0 && newR < grid.length && 
-                    newC >= 0 && newC < grid[0].length && 
-                    grid[newR][newC] == '1') {
-                    
-                    queue.offer(new int[]{newR, newC});
+                if (newR >= 0 && newR < grid.length && newC >= 0 && newC < cols
+                                                && grid[newR][newC] == '1') {
+
+                    queue.offer(newR * cols + newC);
                     grid[newR][newC] = '0';
                 }
             }
