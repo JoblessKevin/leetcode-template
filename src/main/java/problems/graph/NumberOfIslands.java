@@ -208,4 +208,38 @@ public class NumberOfIslands {
 
         return dsu.getCount();
     }
+
+    // ==========================================
+    // For DSU
+    // ==========================================
+    public static void main(String[] args) {
+        // 1. 建立解題物件
+        NumberOfIslands solver = new NumberOfIslands();
+
+        // 2. 準備測試資料 (Input)
+        // 這裡設計了一個經典案例：
+        // 左上角有一大塊 (1,1,1,1)，右下角有一小塊 (1)，中間被水隔開
+        // 預期結果應該是：3 (左上角一塊 + 中間一塊 + 右下角一塊)
+        char[][] grid = {{'1', '1', '0', '0', '0'}, {'1', '1', '0', '0', '0'},
+                                        {'0', '0', '1', '0', '0'}, {'0', '0', '0', '1', '1'}};
+
+        System.out.println("========== 測試開始 ==========");
+
+        // 印出原本的地圖讓你看比較清楚
+        System.out.println("輸入地圖:");
+        for (char[] row : grid) {
+            for (char c : row) {
+                System.out.print(c + " ");
+            }
+            System.out.println();
+        }
+
+        // 3. 【關鍵步驟】呼叫你的 function
+        System.out.println("\n正在呼叫 numIslands_dsu()...");
+        int result = solver.numIslands_dsu(grid);
+
+        // 4. 印出結果
+        System.out.println("計算結果 (島嶼數量): " + result);
+        System.out.println("========== 測試結束 ==========");
+    }
 }
