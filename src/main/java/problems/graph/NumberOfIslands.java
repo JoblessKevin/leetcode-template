@@ -134,7 +134,7 @@ public class NumberOfIslands {
     private static class DSU {
         int[] parent;
         int[] rank;
-        int count;
+        int count; // 目前獨立島嶼的數量
 
         public DSU(char[][] grid) {
             int m = grid.length;
@@ -143,37 +143,52 @@ public class NumberOfIslands {
             rank = new int[m * n];
             count = 0;
 
+            System.out.println("--- [DSU 初始化階段] ---");
             for (int r = 0; r < m; r++) {
                 for (int c = 0; c < n; c++) {
                     if (grid[r][c] == '1') {
                         int id = r * n + c;
                         parent[id] = id;
                         count++;
+                        System.out.println(String.format("發現陸地 (%d, %d) [ID: %d]，暫時視為一個獨立島嶼。", r, c,
+                                                        id));
                     }
                 }
             }
+            System.out.println(">>> 初始化完成，目前共有 " + count + " 個獨立島嶼 (Count)\n");
         }
 
         public int find(int i) {
             if (parent[i] != i) {
-                parent[i] = find(parent[i]);
+                parent[i] = find(parent[i]); // 路徑壓縮
             }
             return parent[i];
         }
 
+        // 修改這裡：加入 Log 讓我們看到合併過程
         public void union(int i, int j) {
             int rootX = find(i);
             int rootY = find(j);
+
+            System.out.print(String.format("嘗試連結 ID %d 和 ID %d... ", i, j));
+
             if (rootX != rootY) {
+                // 兩者老大不同，可以合併
                 if (rank[rootX] > rank[rootY]) {
                     parent[rootY] = rootX;
+                    System.out.print("合併成功！" + rootY + " 拜 " + rootX + " 為老大。");
                 } else if (rank[rootX] < rank[rootY]) {
                     parent[rootX] = rootY;
+                    System.out.print("合併成功！" + rootX + " 拜 " + rootY + " 為老大。");
                 } else {
                     parent[rootY] = rootX;
                     rank[rootX]++;
+                    System.out.print("合併成功！" + rootY + " 拜 " + rootX + " 為老大。");
                 }
-                count--;
+                count--; // 關鍵：島嶼數量減一
+                System.out.println(" (目前 Count 降為: " + count + ")");
+            } else {
+                System.out.println("失敗。它們原本就是同一國的 (老大都是 " + rootX + ")，無需合併。");
             }
         }
 
@@ -190,56 +205,51 @@ public class NumberOfIslands {
         int cols = grid[0].length;
         DSU dsu = new DSU(grid);
 
+        System.out.println("--- [開始遍歷地圖與合併] ---");
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 if (grid[r][c] == '1') {
                     int id = r * cols + c;
 
+                    // 檢查右邊
                     if (c + 1 < cols && grid[r][c + 1] == '1') {
-                        dsu.union(id, r * cols + (c + 1));
+                        int rightId = r * cols + (c + 1);
+                        System.out.println("位置 (" + r + "," + c + ") 發現右邊也是陸地，發起 Union...");
+                        dsu.union(id, rightId);
                     }
 
+                    // 檢查下面
                     if (r + 1 < rows && grid[r + 1][c] == '1') {
-                        dsu.union(id, (r + 1) * cols + c);
+                        int downId = (r + 1) * cols + c;
+                        System.out.println("位置 (" + r + "," + c + ") 發現下面也是陸地，發起 Union...");
+                        dsu.union(id, downId);
                     }
                 }
             }
         }
-
         return dsu.getCount();
     }
 
-    // ==========================================
-    // For DSU
-    // ==========================================
+    // Main Test Case
     public static void main(String[] args) {
-        // 1. 建立解題物件
         NumberOfIslands solver = new NumberOfIslands();
 
-        // 2. 準備測試資料 (Input)
-        // 這裡設計了一個經典案例：
-        // 左上角有一大塊 (1,1,1,1)，右下角有一小塊 (1)，中間被水隔開
-        // 預期結果應該是：3 (左上角一塊 + 中間一塊 + 右下角一塊)
-        char[][] grid = {{'1', '1', '0', '0', '0'}, {'1', '1', '0', '0', '0'},
-                                        {'0', '0', '1', '0', '0'}, {'0', '0', '0', '1', '1'}};
+        // 建立一個 3x3 的地圖
+        // 1 1 0 (ID: 0, 1, 2) -> 0和1是陸地
+        // 1 0 0 (ID: 3, 4, 5) -> 3是陸地
+        // 0 0 1 (ID: 6, 7, 8) -> 8是陸地 (孤島)
+        // 預期結果：2 (左上角連成一塊，右下角一塊)
+        char[][] grid = {{'1', '1', '0'}, {'1', '0', '0'}, {'0', '0', '1'}};
 
-        System.out.println("========== 測試開始 ==========");
+        System.out.println("地圖預覽 (ID對照):");
+        System.out.println("[0] [1] [2]");
+        System.out.println("[3] [4] [5]");
+        System.out.println("[6] [7] [8]");
+        System.out.println("其中 0, 1, 3, 8 是陸地 '1'\n");
 
-        // 印出原本的地圖讓你看比較清楚
-        System.out.println("輸入地圖:");
-        for (char[] row : grid) {
-            for (char c : row) {
-                System.out.print(c + " ");
-            }
-            System.out.println();
-        }
-
-        // 3. 【關鍵步驟】呼叫你的 function
-        System.out.println("\n正在呼叫 numIslands_dsu()...");
         int result = solver.numIslands_dsu(grid);
 
-        // 4. 印出結果
-        System.out.println("計算結果 (島嶼數量): " + result);
-        System.out.println("========== 測試結束 ==========");
+        System.out.println("\n--- [最終結果] ---");
+        System.out.println("島嶼數量: " + result);
     }
 }
