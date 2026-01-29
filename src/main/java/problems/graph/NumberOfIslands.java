@@ -165,7 +165,6 @@ public class NumberOfIslands {
             return parent[i];
         }
 
-        // 修改這裡：加入 Log 讓我們看到合併過程
         public void union(int i, int j) {
             int rootX = find(i);
             int rootY = find(j);
