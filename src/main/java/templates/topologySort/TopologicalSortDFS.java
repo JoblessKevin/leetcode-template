@@ -4,9 +4,10 @@ import java.util.*;
 
 public class TopologicalSortDFS {
 
-    public List<Integer> topologicalSort(int numTasks, List<List<Integer>> adj) {
+    public List<Integer> sort(int numTasks, List<List<Integer>> adj) {
         int[] visited = new int[numTasks];
-        Stack<Integer> stack = new Stack<>();
+
+        Deque<Integer> stack = new ArrayDeque<>();
 
         for (int i = 0; i < numTasks; i++) {
             if (visited[i] == 0) {
@@ -24,7 +25,7 @@ public class TopologicalSortDFS {
     }
 
     private boolean hasCycle(int curr, List<List<Integer>> adj, int[] visited,
-                                    Stack<Integer> stack) {
+                                    Deque<Integer> stack) {
         visited[curr] = 1;
 
         for (int neighbor : adj.get(curr)) {

@@ -4,7 +4,7 @@ import java.util.*;
 
 public class TopologicalSortKahn {
 
-    public List<Integer> topologicalSort(int numTasks, List<List<Integer>> adj) {
+    public List<Integer> sort(int numTasks, List<List<Integer>> adj) {
         int[] inDegree = new int[numTasks];
         List<Integer> result = new ArrayList<>();
 
@@ -14,7 +14,7 @@ public class TopologicalSortKahn {
             }
         }
 
-        Queue<Integer> queue = new LinkedList<>();
+        Deque<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < numTasks; i++) {
             if (inDegree[i] == 0) {
                 queue.offer(i);
