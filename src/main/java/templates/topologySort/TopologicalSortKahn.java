@@ -14,7 +14,7 @@ public class TopologicalSortKahn {
             }
         }
 
-        Deque<Integer> queue = new ArrayDeque<>();
+        Queue<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < numTasks; i++) {
             if (inDegree[i] == 0) {
                 queue.offer(i);
