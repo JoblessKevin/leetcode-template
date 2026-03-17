@@ -1,4 +1,4 @@
-package templates.graph;
+package templates.mst;
 
 /**
  * 如果實戰中使用 rank 的寫法，就只能知道樹的高度，無法知道集合的大小

@@ -1,12 +1,12 @@
-package templates.graph;
+package templates.mst;
 
 import java.util.Arrays;
 
-public class KruskalMST {
+public class KruskalMst {
     // 1. 全域的 parent 陣列，用來記錄每個節點的老大
     static int[] parent;
 
-    // 2. 極簡版 Find (包含路徑壓縮)
+    // 2. 極簡版 Find (包含路徑壓縮，短短2行搞定！)
     static int find(int i) {
         if (parent[i] == i)
             return i;
@@ -14,7 +14,7 @@ public class KruskalMST {
         return parent[i] = find(parent[i]);
     }
 
-    // 3. Kruskal 主邏輯
+    // 3. Kruskal 主邏輯：傳入頂點數量 n，以及二維陣列 edges [u, v, weight]
     public static int kruskal(int n, int[][] edges) {
         // 初始化 Union-Find，一開始大家的老大都是自己
         parent = new int[n];
@@ -38,11 +38,11 @@ public class KruskalMST {
 
             // 如果老大不同，代表不會形成迴圈 (可以連起來！)
             if (rootU != rootV) {
-                parent[rootU] = rootV; // 合併 (Union)
+                parent[rootU] = rootV; // 合併 (Union)：讓 U 的老大認 V 的老大當老大
                 mstWeight += weight; // 累加權重
                 edgeCount++; // 邊數 + 1
 
-                // 如果已經挑了 n - 1 條邊，代表樹已經完成了，提早收工
+                // 如果已經挑了 n - 1 條邊，代表樹已經完成了，提早收工！
                 if (edgeCount == n - 1)
                     break;
             }
@@ -55,11 +55,9 @@ public class KruskalMST {
     // --- 測試區 ---
     public static void main(String[] args) {
         int n = 4; // 4 個頂點 (0, 1, 2, 3)
-        // 提供的邊：[起點, 終點, 權重]
         int[][] edges = {{0, 1, 10}, {0, 2, 6}, {0, 3, 5}, {1, 3, 15}, {2, 3, 4}};
 
         System.out.println("最小生成樹的總權重: " + kruskal(n, edges));
-        // 正確預期輸出: 19
-        // 挑選過程: (2,3)權重4 -> (0,3)權重5 -> 捨棄(0,2)避免迴圈 -> (0,1)權重10。4+5+10=19
+        // 預期輸出: 19
     }
 }

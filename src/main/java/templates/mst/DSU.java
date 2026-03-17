@@ -1,4 +1,4 @@
-package templates.graph;
+package templates.mst;
 
 public class DSU {
     private final int[] parent, size;
