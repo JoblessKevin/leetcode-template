@@ -48,7 +48,7 @@ public class BellmanFord {
             }
         }
 
-        // 3. 第 V 次檢查：偵測是否存在「負權重迴圈」
+        // 3. 第 V 次檢查：偵測是否存在「負權重還」
         for (int j = 0; j < E; ++j) {
             int u = edge[j].src;
             int v = edge[j].dest;
