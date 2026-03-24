@@ -51,16 +51,9 @@ public class HouseRobberIII {
         return res;
     }
 
-    //@formatter:off
-    // 思考方式：
-    // 既然父子不能同時偷，那就把問題拆成兩種情況：
-    // 情況 A：偷第 0 間，但不偷最後一間 (範圍 0 ~ n-2)。
-    // 情況 B：不偷第 0 間，但偷最後一間 (範圍 1 ~ n-1)。
-    // 最後取這兩種情況的最大值。
-    // 時間複雜度：O(N)
-    // 空間複雜度：O(1)
+    // @formatter:off
     // ==========================================
-    // 3. 測試環境 (Main Method)
+    // 測試環境 (Main Method)
     // ==========================================
     public static void main(String[] args) {
         HouseRobberIII solution = new HouseRobberIII();
@@ -132,5 +125,5 @@ public class HouseRobberIII {
         System.out.println("  狀態: " + (result4 == 0 ? "正確" : "錯誤"));
         System.out.println("--------------------------------------------------");
     }
-    //@formatter:on
+    // @formatter:on
 }
