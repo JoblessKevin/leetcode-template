@@ -40,7 +40,17 @@ package problems.dp;
  */
 public class LongestPalindromicSubstring {
     /**
+     * @formatter:off
      * Manacher's Algorithm (馬拉車演算法) - 線性時間
+     * 核心思想：
+     * 1. 預處理：在每個字符之間插入特殊符號（如 #），將所有回文（奇數長度與偶數長度）統一處理為奇數長度回文。
+     * 2. 擴展：遍歷新的字串，對每個位置 i 計算其最長回文半徑 p[i]。
+     * 3. 優化：利用已計算的結果。如果當前位置 i 在已知最長回文的右邊界 R 內，我們可以利用其對稱位置 mirror 的半徑 p[mirror] 來初始化 p[i]，避免從頭計算。
+     * 4. 更新邊界：如果 i 擴展後超過了 R，更新 C（中心）和 R（右邊界）。
+     * 5. 提取結果：找到最大的 p[i]，從預處理後的字串還原到原字串。
+     * 時間複雜度：O(N)。雖然有巢狀迴圈，但 R 只會單調增加，總擴展次數是線性的。
+     * 空間複雜度：O(N)。需要額外空間儲存預處理後的字串和半徑陣列。
+     * @formatter:on
      */
     public String longestPalindrome_manacher(String s) {
         // 1. 預處理
@@ -63,12 +73,12 @@ public class LongestPalindromicSubstring {
             }
 
             // 嘗試往外擴散 (基於初始值繼續)
-            int a = i + (1 + p[i]);
-            int b = i - (1 + p[i]);
-            while (a < n && b >= 0 && t.charAt(a) == t.charAt(b)) {
+            int r = i + (1 + p[i]);
+            int l = i - (1 + p[i]);
+            while (r < n && l >= 0 && t.charAt(r) == t.charAt(l)) {
                 p[i]++;
-                a++;
-                b--;
+                r++;
+                l--;
             }
 
             // 如果 i 擴散後的右邊界超過了目前的 R，更新 C 和 R
