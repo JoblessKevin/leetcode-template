@@ -1,11 +1,11 @@
-package problems.dp;
+package problems.dp.linear;
 
 import java.util.Arrays;
 
 /**
  * @formatter:off
  * 找最長遞增子序列 (LIS), Sequence (序列) 是一個數學和資料結構上的名詞，指的是「一連串有先後順序的資料」 
- * Time complexity: O(n^2), Space complexity: O(n)
+ * DP: Time complexity: O(n^2), Space complexity: O(n)
  * @formatter:on
  */
 public class LongestIncreasingSubsequence {

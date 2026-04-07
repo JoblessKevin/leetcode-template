@@ -1,4 +1,4 @@
-package problems.dp;
+package problems.dp.linear;
 
 /**
  * 找最大的連續 subarray 的乘積

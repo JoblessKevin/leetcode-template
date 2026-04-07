@@ -1,4 +1,4 @@
-package problems.greedy;
+package problems.dp.linear;
 
 /**
  * @formatter:off

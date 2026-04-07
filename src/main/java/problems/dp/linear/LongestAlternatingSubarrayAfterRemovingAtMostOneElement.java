@@ -1,4 +1,4 @@
-package problems.dp;
+package problems.dp.linear;
 
 import java.util.Arrays;
 

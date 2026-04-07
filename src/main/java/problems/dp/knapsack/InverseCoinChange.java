@@ -1,4 +1,4 @@
-package problems.dp;
+package problems.dp.knapsack;
 
 import java.util.ArrayList;
 import java.util.Arrays;

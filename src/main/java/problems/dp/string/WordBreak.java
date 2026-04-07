@@ -1,4 +1,4 @@
-package problems.dp;
+package problems.dp.string;
 
 import java.util.Arrays;
 import java.util.HashSet;
