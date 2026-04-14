@@ -3,16 +3,19 @@ package problems.intervals;
 import java.util.Arrays;
 
 /**
+ * @formatter:off
  * 題目要求： 給定一個區間集合，移除最少數量的區間，使得剩下的區間互不重疊。
  * 
  * 核心概念：
  * 1. 排序：按照區間的「結束點」排序。
  * 2. 貪婪選擇：優先保留「快要結束」的區間，因為它會給後面的區間留下更多空間。
  * 3. 移除：如果下一個區間的開始點 < 目前保留區間的結束點，則移除下一個區間。
+ * @formatter:on
  */
 public class NonOverlappingIntervals {
     public int eraseOverlapIntervals(int[][] intervals) {
-        if (intervals.length <= 1) return 0;
+        if (intervals.length <= 1)
+            return 0;
 
         // 1. 排序：按照區間的「結束點」排序
         // 這是這題的關鍵！我們希望優先處理「快要結束」的區間，
@@ -25,7 +28,7 @@ public class NonOverlappingIntervals {
         // 2. 掃描
         for (int i = 1; i < intervals.length; i++) {
             int[] nextInterval = intervals[i];
-            
+
             // 檢查重疊：如果下一個區間的開始點 < 目前保留區間的結束點
             if (nextInterval[0] < currentEnd) {
                 // 重疊了！因為我們是按照 end 排序的，
