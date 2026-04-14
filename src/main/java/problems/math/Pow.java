@@ -33,6 +33,27 @@ public class Pow {
         return result;
     }
 
+    // -------------Binary Exponentiation(Iterative Optimized)---------------
+    public double myPow_iterative_optimized(double x, int n) {
+        if (x == 0)
+            return 0;
+        if (n == 0)
+            return 1;
+
+        double res = 1;
+        long power = Math.abs((long) n);
+
+        while (power > 0) {
+            if ((power & 1) == 1) {
+                res *= x;
+            }
+            x *= x;
+            power >>= 1;
+        }
+
+        return n >= 0 ? res : 1 / res;
+    }
+
     // -------------Binary Exponentiation(Recursive)---------------
     public double myPow_recursive(double x, int n) {
         long N = n; // 照慣例，先用 long 處理 Integer.MIN_VALUE 的溢位
@@ -59,6 +80,27 @@ public class Pow {
         else {
             return half * half * x;
         }
+    }
+
+    // -------------Binary Exponentiation(Recursive Optimized)---------------
+    public double myPow_recursive_optimized(double x, int n) {
+        if (x == 0) {
+            return 0;
+        }
+        if (n == 0) {
+            return 1;
+        }
+
+        double res = helper(x, Math.abs((long) n));
+        return (n >= 0) ? res : 1 / res;
+    }
+
+    private double helper(double x, long n) {
+        if (n == 0) {
+            return 1;
+        }
+        double half = helper(x, n / 2);
+        return (n % 2 == 0) ? half * half : x * half * half;
     }
 
     // -------------Test Cases---------------
