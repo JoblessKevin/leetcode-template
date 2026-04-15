@@ -1,4 +1,4 @@
-package problems.math;
+package problems.math.matrix;
 
 public class SetMatrixZeroes {
     public void setZeroes(int[][] matrix) {

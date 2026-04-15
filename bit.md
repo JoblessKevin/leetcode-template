@@ -59,3 +59,13 @@ boolean isPowerOfTwo = (n > 0) && ((n & (n - 1)) == 0);
 `n & -n` 可以快速將數字 `n` 最右邊的 `1` 變成 `0`。
 * 範例：`n = 12 (1100)` -> `n - 1 = 11 (1011)` -> `1100 & 1011 = 1000 (8)`
 * 應用：計算一個數字有多少個 `1` (Set Bits)，或判斷是否為 2 的冪次方。
+
+
+---
+
+## 4. 常用算法
+
+### Cyclic Sort
+1. Range is [1, n] or [0, n]
+2. Find the "missing", "duplicated", or "first positive" number.
+3. Required O(n) time and O(1) space.
