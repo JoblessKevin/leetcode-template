@@ -2,6 +2,19 @@ package problems.array;
 
 public class RemoveElement {
     public int removeElement(int[] nums, int val) {
+        int index = 0;
+
+        for (int num : nums) {
+            if (num != val) {
+                nums[index] = num;
+                index++;
+            }
+        }
+
+        return index;
+    }
+
+    public int removeElement_twopointer(int[] nums, int val) {
         // k 代表「下一個非 val 元素要存放的位置」
         int k = 0;
 

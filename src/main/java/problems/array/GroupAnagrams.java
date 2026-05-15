@@ -24,7 +24,44 @@ import java.util.Map;
  * @formatter:on
  */
 public class GroupAnagrams {
+
     public List<List<String>> groupAnagrams(String[] strs) {
+        if (strs == null || strs.length == 0)
+            return new ArrayList<>();
+
+        // Map 的 Key 是「字母統計後的字串」，Value 是「變位字清單」
+        Map<String, List<String>> map = new HashMap<>();
+
+        for (String s : strs) {
+            // 1. 統計當前字串的 26 個字母頻率
+            int[] count = new int[26];
+            for (char c : s.toCharArray()) {
+                count[c - 'a']++;
+            }
+
+            // 2. 將統計陣列轉化為一個唯一的字串 Key
+            // 例如: "1#0#2#0..." 代表 1個a, 0個b, 2個c
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 26; i++) {
+                sb.append(count[i]);
+                sb.append('#'); // 分隔符號，確保 11 個 'a' 不會跟 1 個 'a' 混淆
+            }
+            String key = sb.toString();
+
+            // 3. 根據 Key 分類
+            map.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
+            // 傳統寫法：
+            // if (!map.containsKey(key)) {
+            // map.put(key, new ArrayList<>());
+            // }
+            // map.get(key).add(s);
+        }
+
+        // 最後直接把所有 Map 的 Values 轉成 List 回傳
+        return new ArrayList<>(map.values());
+    }
+
+    public List<List<String>> groupAnagrams_sort(String[] strs) {
         if (strs == null || strs.length == 0)
             return new ArrayList<>();
 

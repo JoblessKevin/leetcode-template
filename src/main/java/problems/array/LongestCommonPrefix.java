@@ -80,12 +80,12 @@ public class LongestCommonPrefix {
     private void insert(TrieNode root, String word) {
         TrieNode curr = root;
         for (char ch : word.toCharArray()) {
-            int idx = ch - 'a';
-            if (curr.children[idx] == null) {
-                curr.children[idx] = new TrieNode();
+            int i = ch - 'a';
+            if (curr.children[i] == null) {
+                curr.children[i] = new TrieNode();
                 curr.childCount++;
             }
-            curr = curr.children[idx];
+            curr = curr.children[i];
         }
         curr.isEnd = true;
     }
