@@ -79,8 +79,8 @@ public class LongestCommonPrefix {
 
     private void insert(TrieNode root, String word) {
         TrieNode curr = root;
-        for (char c : word.toCharArray()) {
-            int idx = c - 'a';
+        for (char ch : word.toCharArray()) {
+            int idx = ch - 'a';
             if (curr.children[idx] == null) {
                 curr.children[idx] = new TrieNode();
                 curr.childCount++;
@@ -112,11 +112,11 @@ public class LongestCommonPrefix {
         TrieNode curr = root;
 
         // 使用第一個字串作為導引路徑向下搜尋
-        for (char c : strs[0].toCharArray()) {
+        for (char ch : strs[0].toCharArray()) {
             // 條件：只有一個子節點，且目前節點不是某個短字串的結尾
             if (curr.childCount == 1 && !curr.isEnd) {
-                sb.append(c);
-                curr = curr.children[c - 'a'];
+                sb.append(ch);
+                curr = curr.children[ch - 'a'];
             } else {
                 break;
             }
