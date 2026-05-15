@@ -14,6 +14,17 @@ public class ConcatenationOfArray {
         return res;
     }
 
+    public int[] getConcatenation_module(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[2 * n];
+
+        for (int i = 0; i < 2 * n; i++) {
+            ans[i] = nums[i % n];
+        }
+
+        return ans;
+    }
+
     public int[] getConcatenation_optimized(int[] nums) {
         int n = nums.length;
         int[] res = new int[2 * n];
