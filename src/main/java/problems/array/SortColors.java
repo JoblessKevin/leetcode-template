@@ -1,5 +1,7 @@
 package problems.array;
 
+import java.util.HashMap;
+
 /**
  * Time: O(n) | Space: O(1) One-pass solution (Dutch National Flag Algorithm)
  */
@@ -9,25 +11,25 @@ public class SortColors {
             return;
 
         // 三個指針的職責：
-        int low = 0; // [0, low) 區域全是 0 (紅色)
-        int mid = 0; // [low, mid) 區域全是 1 (白色)
-        int high = nums.length - 1; // (high, end] 區域全是 2 (藍色)
+        int left = 0; // [0, left) 區域全是 0 (紅色)
+        int curr = 0; // [left, curr) 區域全是 1 (白色)
+        int right = nums.length - 1; // (right, end] 區域全是 2 (藍色)
 
-        while (mid <= high) {
-            if (nums[mid] == 0) {
-                // 發現紅球：把它丟到左邊邊界 low，換回來的一定是 1
-                swap(nums, low, mid);
-                low++;
-                mid++;
-            } else if (nums[mid] == 1) {
-                // 發現白球：它本來就該在中間，mid 直接往前走
-                mid++;
-            } else { // nums[mid] == 2
-                // 發現藍球：把它丟到右邊邊界 high
-                swap(nums, mid, high);
-                high--;
-                // 【核心細節】：這裡 mid 不能加一！
-                // 因為從 high 換過來的球是「未知」的，必須留在原地下一輪再檢查它
+        while (curr <= right) {
+            if (nums[curr] == 0) {
+                // 發現紅球：把它丟到左邊邊界 left，換回來的一定是 1
+                swap(nums, left, curr);
+                left++;
+                curr++;
+            } else if (nums[curr] == 1) {
+                // 發現白球：它本來就該在中間，curr 直接往前走
+                curr++;
+            } else { // nums[curr] == 2
+                // 發現藍球：把它丟到右邊邊界 right
+                swap(nums, curr, right);
+                right--;
+                // 【核心細節】：這裡 curr 不能加一！
+                // 因為從 right 換過來的球是「未知」的，必須留在原地下一輪再檢查它
             }
         }
     }
@@ -36,6 +38,23 @@ public class SortColors {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+    public void sortColors_bruteforce(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (i < map.getOrDefault(0, 0)) {
+                nums[i] = 0;
+            } else if (i < map.getOrDefault(0, 0) + map.getOrDefault(1, 0)) {
+                nums[i] = 1;
+            } else {
+                nums[i] = 2;
+            }
+        }
     }
 
     public static void main(String[] args) {

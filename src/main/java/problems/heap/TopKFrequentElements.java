@@ -8,28 +8,30 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 /**
- * Constraints: You may return the answer in any order.
- * 1. Standard Solution: MinHeap -> 適合一般通用情況，適用於 Stream, Time: O(N log k), Space: O(N)
- * 2. Optimal Solution: Bucket Sort -> 適合此題 (頻率有限制) 的最佳解, Time: O(N), Space: O(N)
+ * Constraints: You may return the answer in any order. 1. Standard Solution: MinHeap ->
+ * 適合一般通用情況，適用於 Stream, Time: O(N log k), Space: O(N) 2. Optimal Solution: Bucket Sort -> 適合此題
+ * (頻率有限制) 的最佳解, Time: O(N), Space: O(N)
  */
 public class TopKFrequentElements {
 
     /**
-     * 解法一：Standard Solution (MinHeap)
-     * 核心思路：維護一個大小為 k 的最小堆積，踢掉頻率最低的元素。
+     * 解法一：Standard Solution (MinHeap) 核心思路：維護一個大小為 k 的最小堆積，踢掉頻率最低的元素。
      */
-    public int[] topKFrequentViaHeap(int[] nums, int k) {
+    public int[] topKFrequent(int[] nums, int k) {
         // 1. 統計頻率
-        Map<Integer, Integer> countMap = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
         for (int num : nums) {
-            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+            map.put(num, map.getOrDefault(num, 0) + 1);
         }
 
         // 2. 建立 Min-Heap (依據頻率由小到大排)
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>((n1, n2) -> countMap.get(n1) - countMap.get(n2));
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>((a, b) -> map.get(a) - map.get(b));
+
+        // PriorityQueue<Map.Entry<Integer, Integer>> minHeap =
+        // new PriorityQueue<>((a, b) -> a.getValue() - b.getValue());
 
         // 3. 維護 Top K
-        for (int num : countMap.keySet()) {
+        for (int num : map.keySet()) {
             minHeap.offer(num);
             if (minHeap.size() > k) {
                 minHeap.poll(); // 踢掉頻率最小的
@@ -42,13 +44,13 @@ public class TopKFrequentElements {
             result[i] = minHeap.poll();
         }
         return result;
+        // return minHeap.stream().mapToInt(Integer::intValue).toArray();
     }
 
     /**
-     * 解法二：Optimal Solution (Bucket Sort)
-     * 核心思路：因為頻率不可能超過 N，所以可以用陣列索引代表頻率，直接放入對應的桶子。
+     * 解法二：Optimal Solution (Bucket Sort) 核心思路：因為頻率不可能超過 N，所以可以用陣列索引代表頻率，直接放入對應的桶子。
      */
-    public int[] topKFrequentViaBucketSort(int[] nums, int k) {
+    public int[] topKFrequent_bucketSort(int[] nums, int k) {
         // 1. 統計頻率
         Map<Integer, Integer> countMap = new HashMap<>();
         for (int num : nums) {
@@ -82,11 +84,11 @@ public class TopKFrequentElements {
     /**
      * 解法二：Optimal Solution (Bucket Sort) -- 好理解版
      */
-    public int[] topKFrequentViaBucketSort_betterUnderstanding(int[] nums, int k) {
+    public int[] topKFrequent_bucketSort_betterUnderstanding(int[] nums, int k) {
         // 1. 統計頻率
-        Map<Integer, Integer> countMap = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
         for (int num : nums) {
-            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+            map.put(num, map.getOrDefault(num, 0) + 1);
         }
 
         // 2. 建立桶子 (Index = 頻率, Value = 該頻率的數字 List)
@@ -97,8 +99,8 @@ public class TopKFrequentElements {
             buckets.add(new ArrayList<>());
         }
 
-        for (int num : countMap.keySet()) {
-            int freq = countMap.get(num);
+        for (int num : map.keySet()) {
+            int freq = map.get(num);
             buckets.get(freq).add(num);
         }
 
@@ -114,6 +116,30 @@ public class TopKFrequentElements {
         return resultList.stream().mapToInt(i -> i).toArray();
     }
 
+    public int[] topKFrequent_sort_bruteforce(int[] nums, int k) {
+        // Step 1: 用 HashMap 統計每個數字出現的次數
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        // Step 2: 把 Map 裡的所有數字（Key）拿出來，放進一個 List 準備排序
+        List<Integer> keys = new ArrayList<>(map.keySet());
+
+        // Step 3: 根據他們在 Map 裡對應的「次數」進行降序排序（大到小）
+        // (a, b) -> countMap.get(b) - countMap.get(a) 代表次數多的排前面
+        keys.sort((a, b) -> map.get(b) - map.get(a));
+        // uniqueNums.sort((a, b) -> Integer.compare(countMap.get(b), countMap.get(a)));
+
+        // Step 4: 把排在前 k 名的數字撈出來，塞進結果陣列中
+        int[] results = new int[k];
+        for (int i = 0; i < k; i++) {
+            results[i] = keys.get(i);
+        }
+
+        return results;
+    }
+
     // ==========================================
     // Test cases
     // ==========================================
@@ -125,15 +151,17 @@ public class TopKFrequentElements {
         System.out.println("Input: nums = " + Arrays.toString(nums) + ", k = " + k);
 
         // 測試 Heap 解法
-        int[] resHeap = solution.topKFrequentViaHeap(nums, k);
+        int[] resHeap = solution.topKFrequent(nums, k);
         System.out.println("Heap Result: " + Arrays.toString(resHeap));
 
         // 測試 Bucket Sort 解法
-        int[] resBucket = solution.topKFrequentViaBucketSort(nums, k);
+        int[] resBucket = solution.topKFrequent_bucketSort(nums, k);
         System.out.println("Bucket Sort Result: " + Arrays.toString(resBucket));
 
         // 測試 Bucket Sort 解法 (好理解版)
-        int[] resBucket_betterUnderstanding = solution.topKFrequentViaBucketSort_betterUnderstanding(nums, k);
-        System.out.println("Bucket Sort Better Understanding Result: " + Arrays.toString(resBucket_betterUnderstanding));
+        int[] resBucket_betterUnderstanding = solution
+                                        .topKFrequent_bucketSort_betterUnderstanding(nums, k);
+        System.out.println("Bucket Sort Better Understanding Result: "
+                                        + Arrays.toString(resBucket_betterUnderstanding));
     }
 }
