@@ -51,69 +51,43 @@ public class TopKFrequentElements {
      * 解法二：Optimal Solution (Bucket Sort) 核心思路：因為頻率不可能超過 N，所以可以用陣列索引代表頻率，直接放入對應的桶子。
      */
     public int[] topKFrequent_bucketSort(int[] nums, int k) {
-        // 1. 統計頻率
-        Map<Integer, Integer> countMap = new HashMap<>();
-        for (int num : nums) {
-            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
-        }
-
-        // 2. 建立桶子 (Index = 頻率, Value = 該頻率的數字 List)
-        // 頻率最多就是 nums.length (全部都一樣)，所以大小設為 length + 1
-        List<Integer>[] buckets = new List[nums.length + 1];
-
-        for (int num : countMap.keySet()) {
-            int freq = countMap.get(num);
-            if (buckets[freq] == null) {
-                buckets[freq] = new ArrayList<>();
-            }
-            buckets[freq].add(num);
-        }
-
-        // 3. 從後往前 (高頻 -> 低頻) 倒出 K 個
-        List<Integer> resultList = new ArrayList<>();
-        for (int i = buckets.length - 1; i >= 0 && resultList.size() < k; i--) {
-            if (buckets[i] != null) {
-                resultList.addAll(buckets[i]);
-            }
-        }
-
-        // 4. 轉成 int[]
-        return resultList.stream().mapToInt(i -> i).toArray();
-    }
-
-    /**
-     * 解法二：Optimal Solution (Bucket Sort) -- 好理解版
-     */
-    public int[] topKFrequent_bucketSort_betterUnderstanding(int[] nums, int k) {
-        // 1. 統計頻率
-        Map<Integer, Integer> map = new HashMap<>();
+        // 1. 統計頻率（你的第一步，寫得很棒！）
+        HashMap<Integer, Integer> map = new HashMap<>();
         for (int num : nums) {
             map.put(num, map.getOrDefault(num, 0) + 1);
         }
 
-        // 2. 建立桶子 (Index = 頻率, Value = 該頻率的數字 List)
-        // 頻率最多就是 nums.length (全部都一樣)，所以大小設為 length + 1
-        List<List<Integer>> buckets = new ArrayList<>();
-
-        for (int i = 0; i < nums.length + 1; i++) {
-            buckets.add(new ArrayList<>());
+        // 2. 建立桶子陣列，長度必須是 nums.length + 1，多一個第一格放 frequecy 為 0 的數字（雖然不會有，但為了對齊索引）
+        List<List<Integer>> freq = new ArrayList<>(nums.length + 1);
+        for (int i = 0; i <= nums.length; i++) {
+            freq.add(new ArrayList<>()); // 提早把裡面的小 List 都 new 好
         }
 
-        for (int num : map.keySet()) {
-            int freq = map.get(num);
-            buckets.get(freq).add(num);
+        // 3. 把資料分發到桶子裡。這裡必須同時拿到「數字(Key)」和「次數(Value)」
+        for (var entry : map.entrySet()) {
+            int num = entry.getKey();
+            int count = entry.getValue();
+
+            freq.get(count).add(num);
         }
 
-        // 3. 從後往前 (高頻 -> 低頻) 倒出 K 個
-        List<Integer> resultList = new ArrayList<>();
-        for (int i = buckets.size() - 1; i >= 0 && resultList.size() < k; i--) {
-            if (buckets.get(i) != null) {
-                resultList.addAll(buckets.get(i));
+        // 4. 準備收割答案（修正原本的型態與迴圈範圍）
+        int[] results = new int[k]; // 修正型態為 int[]
+        int j = 0;
+
+        // 核心修正：必須從桶子的最後一格（最高頻率）開始往前撈！
+        for (int i = freq.size() - 1; i >= 0; i--) {
+            for (int num : freq.get(i)) {
+                results[j] = num;
+                j++;
+
+                if (j == k) {
+                    return results;
+                }
             }
         }
 
-        // 4. 轉成 int[]
-        return resultList.stream().mapToInt(i -> i).toArray();
+        return results;
     }
 
     public int[] topKFrequent_sort_bruteforce(int[] nums, int k) {
@@ -157,11 +131,5 @@ public class TopKFrequentElements {
         // 測試 Bucket Sort 解法
         int[] resBucket = solution.topKFrequent_bucketSort(nums, k);
         System.out.println("Bucket Sort Result: " + Arrays.toString(resBucket));
-
-        // 測試 Bucket Sort 解法 (好理解版)
-        int[] resBucket_betterUnderstanding = solution
-                                        .topKFrequent_bucketSort_betterUnderstanding(nums, k);
-        System.out.println("Bucket Sort Better Understanding Result: "
-                                        + Arrays.toString(resBucket_betterUnderstanding));
     }
 }
