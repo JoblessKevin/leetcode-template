@@ -1,5 +1,6 @@
 package problems.array;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,5 +54,39 @@ public class FirstMissingPositive {
 
         // 3. 如果所有數字都歸位了，代表陣列是 [1, 2, ..., n]，缺失的就是 n + 1
         return n + 1;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {3, 4, -1, 1};
+        // int[] nums = {1, 1, 2, 3, 0};
+        System.out.println("原始陣列: " + Arrays.toString(nums));
+
+        // 為了展示交換過程，我們在 Cyclic Sort 內部稍微加一點點輸出
+        // (在實際提交時，請移除這些輸出語句)
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            while (nums[i] > 0 && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
+                int targetIndex = nums[i] - 1;
+                int temp = nums[i];
+                nums[i] = nums[targetIndex];
+                nums[targetIndex] = temp;
+                System.out.println("交換後: " + Arrays.toString(nums));
+            }
+        }
+
+        System.out.println("最終陣列: " + Arrays.toString(nums));
+
+        // 驗證
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != i + 1) {
+                result = i + 1;
+                break;
+            }
+        }
+        if (result == 0)
+            result = n + 1;
+
+        System.out.println("第一個缺失的正整數是: " + result);
     }
 }
