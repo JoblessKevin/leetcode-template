@@ -13,14 +13,14 @@ public class ValidPalindrome {
         return sb.toString().equals(sb.reverse().toString());
     }
 
-    public boolean isPalindrome_twoPointera(String s) {
+    public boolean isPalindrome_twoPointer(String s) {
         int l = 0, r = s.length() - 1;
 
         while (l < r) {
-            while (l < r && !alphaNum(s.charAt(l))) {
+            while (l < r && !check(s.charAt(l))) {
                 l++;
             }
-            while (r > l && !alphaNum(s.charAt(r))) {
+            while (r > l && !check(s.charAt(r))) {
                 r--;
             }
             if (Character.toLowerCase(s.charAt(l)) != Character.toLowerCase(s.charAt(r))) {
@@ -32,7 +32,7 @@ public class ValidPalindrome {
         return true;
     }
 
-    public boolean alphaNum(char c) {
+    public boolean check(char c) {
         return (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9');
     }
 }
