@@ -11,6 +11,19 @@ public class MergeSortedArray {
         Arrays.sort(nums1);
     }
 
+    public void merge_copy_arrays(int[] nums1, int m, int[] nums2, int n) {
+        int[] nums1Copy = Arrays.copyOf(nums1, m);
+        int idx = 0, i = 0, j = 0;
+
+        while (idx < m + n) {
+            if (j >= n || (i < m && nums1Copy[i] <= nums2[j])) {
+                nums1[idx++] = nums1Copy[i++];
+            } else {
+                nums1[idx++] = nums2[j++];
+            }
+        }
+    }
+
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         int p1 = m - 1;
         int p2 = n - 1;
@@ -31,6 +44,19 @@ public class MergeSortedArray {
             nums1[p] = nums2[p2];
             p2--;
             p--;
+        }
+    }
+
+    public void merge_optimized(int[] nums1, int m, int[] nums2, int n) {
+        int last = m + n - 1;
+        int i = m - 1, j = n - 1;
+
+        while (j >= 0) {
+            if (i >= 0 && nums1[i] > nums2[j]) {
+                nums1[last--] = nums1[i--];
+            } else {
+                nums1[last--] = nums2[j--];
+            }
         }
     }
 
