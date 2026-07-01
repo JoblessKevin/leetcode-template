@@ -34,4 +34,14 @@ public class ThreeSum {
         }
         return res;
     }
+
+    public static void main(String[] args) {
+        ThreeSum ts = new ThreeSum();
+        int[] nums = {-1, 0, 1, 2, -1, -4};
+
+        List<List<Integer>> result = ts.threeSum(nums);
+
+        System.out.println("input(sorted): " + Arrays.toString(nums));
+        System.out.println("output: " + result);
+    }
 }
