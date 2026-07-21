@@ -30,13 +30,11 @@ public class LongestRepeatingCharacterReplacement {
         int l = 0, maxFreq = 0, res = 0;
 
         for (int r = 0; r < s.length(); r++) {
-            count.put(s.charAt(r),
-                    count.getOrDefault(s.charAt(r), 0) + 1);
+            count.put(s.charAt(r), count.getOrDefault(s.charAt(r), 0) + 1);
             maxFreq = Math.max(maxFreq, count.get(s.charAt(r)));
 
             while ((r - l + 1) - maxFreq > k) {
-                count.put(s.charAt(l),
-                        count.get(s.charAt(l)) - 1);
+                count.put(s.charAt(l), count.get(s.charAt(l)) - 1);
                 l++;
             }
 
