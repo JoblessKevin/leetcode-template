@@ -1,8 +1,39 @@
 package problems.slidingWindow;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class LongestRepeatingCharacterReplacement {
+    /** Sliding Window */
+    public int characterReplacement(String s, int k) {
+        int res = 0;
+        Set<Character> set = new HashSet<>();
+        for (char ch : s.toCharArray()) {
+            set.add(ch);
+        }
+
+        for (char ch : set) {
+            int count = 0, l = 0;
+            for (int r = 0; r < s.length(); r++) {
+                if (s.charAt(r) == ch) {
+                    count++;
+                }
+
+                while ((r - l + 1) - count > k) {
+                    if (s.charAt(l) == ch) {
+                        count--;
+                    }
+                    l++;
+                }
+
+                res = Math.max(res, r - l + 1);
+            }
+        }
+        return res;
+    }
+
     /** Optimal */
     public int characterReplacement_optimal(String s, int k) {
         int[] count = new int[26];
@@ -26,7 +57,7 @@ public class LongestRepeatingCharacterReplacement {
 
     /** Pure HashMap */
     public int characterReplacement_hashmap(String s, int k) {
-        HashMap<Character, Integer> count = new HashMap<>();
+        Map<Character, Integer> count = new HashMap<>();
         int l = 0, maxFreq = 0, res = 0;
 
         for (int r = 0; r < s.length(); r++) {
@@ -44,4 +75,9 @@ public class LongestRepeatingCharacterReplacement {
         return res;
     }
 
+    public static void main(String[] args) {
+        LongestRepeatingCharacterReplacement obj = new LongestRepeatingCharacterReplacement();
+        System.out.println(obj.characterReplacement("ABAB", 2)); // Output: 4
+        // System.out.println(obj.characterReplacement("AABABBA", 1)); // Output: 4
+    }
 }
