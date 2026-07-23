@@ -15,7 +15,8 @@ public class LongestRepeatingCharacterReplacement {
         }
 
         for (char ch : set) {
-            int count = 0, l = 0;
+            int count = 0; // 在當前的滑動視窗 [l...r] 裡面，『主角字母』出現的次數
+            int l = 0;
             for (int r = 0; r < s.length(); r++) {
                 if (s.charAt(r) == ch) {
                     count++;
@@ -37,7 +38,7 @@ public class LongestRepeatingCharacterReplacement {
     /** Optimal */
     public int characterReplacement_optimal(String s, int k) {
         int[] count = new int[26];
-        int l = 0, maxFreq = 0, res = 0;
+        int l = 0, maxFreq = 0, maxLength = 0;
 
         for (int r = 0; r < s.length(); r++) {
             char ch = s.charAt(r);
@@ -49,10 +50,10 @@ public class LongestRepeatingCharacterReplacement {
                 l++;
             }
 
-            res = Math.max(res, r - l + 1);
+            maxLength = Math.max(maxLength, r - l + 1);
         }
 
-        return res;
+        return maxLength;
     }
 
     /** Pure HashMap */
@@ -77,7 +78,7 @@ public class LongestRepeatingCharacterReplacement {
 
     public static void main(String[] args) {
         LongestRepeatingCharacterReplacement obj = new LongestRepeatingCharacterReplacement();
-        System.out.println(obj.characterReplacement("ABAB", 2)); // Output: 4
-        // System.out.println(obj.characterReplacement("AABABBA", 1)); // Output: 4
+        // System.out.println(obj.characterReplacement("ABAB", 2)); // Output: 4
+        System.out.println(obj.characterReplacement_optimal("AABABBA", 1)); // Output: 4
     }
 }
