@@ -3,6 +3,10 @@ package problems.slidingWindow;
 import java.util.Arrays;
 
 public class MinimumSizeSubarraySum {
+    /**
+     * Sliding window solution If nums contains negative numbers, this solution will not work.
+     * (Using prefix sum and binary search is a better solution)
+     */
     public int minSubArrayLen(int target, int[] nums) {
         int l = 0;
         int sum = 0;
@@ -21,6 +25,27 @@ public class MinimumSizeSubarraySum {
         return (minLen == Integer.MAX_VALUE) ? 0 : minLen;
     }
 
+    public int minSubArrayLen_bruteForce(int target, int[] nums) {
+        int res = Integer.MAX_VALUE;
+
+        for (int i = 0; i < nums.length; i++) {
+            int curSum = 0, j = i;
+            while (j < nums.length) {
+                curSum += nums[j];
+                if (curSum >= target) {
+                    res = Math.min(res, j - i + 1);
+                    break;
+                }
+                j++;
+            }
+        }
+
+        return res == Integer.MAX_VALUE ? 0 : res;
+    }
+
+    /**
+     * @formatter:off
+     */
     public static void main(String[] args) {
         MinimumSizeSubarraySum solution = new MinimumSizeSubarraySum();
 

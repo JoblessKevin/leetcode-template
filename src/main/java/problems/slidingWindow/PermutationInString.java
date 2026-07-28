@@ -13,8 +13,8 @@ public class PermutationInString {
         int[] count1 = new int[26];
         int[] count2 = new int[26];
 
-        for (char c : s1.toCharArray()) {
-            count1[c - 'a']++;
+        for (char ch : s1.toCharArray()) {
+            count1[ch - 'a']++;
         }
 
         for (int i = 0; i < s2.length(); i++) {
@@ -39,8 +39,8 @@ public class PermutationInString {
         int[] count1 = new int[26];
         int[] count2 = new int[26];
 
-        for (char c : s1.toCharArray()) {
-            count1[c - 'a']++;
+        for (char ch : s1.toCharArray()) {
+            count1[ch - 'a']++;
         }
 
         int matches = 0; // 計算多少字母次數完全對上
