@@ -5,20 +5,40 @@ import java.util.Deque;
 
 /**
  * @formatter:off
- * Your MinStack object will be instantiated and called as such:
- * MinStack obj = new MinStack();
- * obj.push(val);
- * obj.pop();
- * int param_3 = obj.top();
- * int param_4 = obj.getMin();
+ * Restrictions:
+ *   1. Methods push, pop, top and getMin operations must all operate in O(1) time complexity.
  * @formatter:on
  */
-
+/** This is the optimal solution. */
 class MinStack {
-    long min;
+    Deque<int[]> stack = new ArrayDeque<>();
+
+    public MinStack() {}
+
+    public void push(int value) {
+        int currentMin = stack.isEmpty() ? value : Math.min(value, stack.peek()[1]);
+        stack.push(new int[] {value, currentMin});
+    }
+
+    public void pop() {
+        stack.pop();
+    }
+
+    public int top() {
+        return stack.peek()[0];
+    }
+
+    public int getMin() {
+        return stack.peek()[1];
+    }
+}
+
+
+class MinStack_Interpolation {
+    private long min;
     private Deque<Long> stack;
 
-    public MinStack() {
+    public MinStack_Interpolation() {
         stack = new ArrayDeque<>();
     }
 
