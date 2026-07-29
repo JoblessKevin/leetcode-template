@@ -1,16 +1,17 @@
 package problems.stack;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
+/** 最佳解為 CustomNodeStack，但是這個解沒有用到 Queue。實作建議使用 OneQueueStack */
 public class ImplementStackUsingQueues {
     public class DoubleQueueStack {
-        private Queue<Integer> q1;
-        private Queue<Integer> q2;
+        private Deque<Integer> q1;
+        private Deque<Integer> q2;
 
         public DoubleQueueStack() {
-            q1 = new LinkedList<>();
-            q2 = new LinkedList<>();
+            q1 = new ArrayDeque<>();
+            q2 = new ArrayDeque<>();
         }
 
         public void push(int x) {
@@ -18,7 +19,7 @@ public class ImplementStackUsingQueues {
             while (!q1.isEmpty()) {
                 q2.offer(q1.poll());
             }
-            Queue<Integer> temp = q1;
+            Deque<Integer> temp = q1;
             q1 = q2;
             q2 = temp;
         }
@@ -37,10 +38,10 @@ public class ImplementStackUsingQueues {
     }
 
     public class OneQueueStack {
-        private Queue<Integer> q;
+        private Deque<Integer> q;
 
         public OneQueueStack() {
-            q = new LinkedList<>();
+            q = new ArrayDeque<>();
         }
 
         public void push(int x) {
@@ -63,37 +64,51 @@ public class ImplementStackUsingQueues {
         }
     }
 
-    public class QueueOfQueuesStack {
-        private Queue<Object> q;
+    public class CustomNodeStack {
+        private class Node {
+            int val;
+            Node next; // 指向底下前一個被 push 進來的節點
 
-        public QueueOfQueuesStack() {
-            q = null;
+            Node(int val) {
+                this.val = val;
+                this.next = null;
+            }
         }
 
+        private Node top; // 永遠指向堆疊的最頂端
+
+        public CustomNodeStack() {
+            this.top = null; // 初始狀態為空
+        }
+
+        // 將新元素推入堆疊頂端
         public void push(int x) {
-            Queue<Object> newQueue = new LinkedList<>();
-            newQueue.add(x);
-            newQueue.add(q);
-            q = newQueue;
+            Node newNode = new Node(x);
+            newNode.next = top; // 新節點的下一個指向原本的頂端
+            top = newNode; // 更新頂端指標為這個新節點
         }
 
+        // 移除並回傳堆疊頂端的元素
         public int pop() {
-            if (q == null)
-                return -1;
-
-            int top = (int) q.poll();
-            q = (Queue<Object>) q.poll();
-            return top;
+            if (empty()) {
+                return -1; // 實務上通常會拋出 EmptyStackException
+            }
+            int value = top.val; // 取出頂端的值
+            top = top.next; // 將頂端指標往下移
+            return value;
         }
 
+        // 回傳堆疊頂端的元素但不移除
         public int top() {
-            if (q == null)
+            if (empty()) {
                 return -1;
-            return (int) q.peek();
+            }
+            return top.val;
         }
 
+        // 檢查堆疊是否為空
         public boolean empty() {
-            return q == null;
+            return top == null;
         }
     }
 }
