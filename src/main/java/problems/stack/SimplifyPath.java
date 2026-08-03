@@ -1,9 +1,7 @@
 package problems.stack;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.List;
 
 public class SimplifyPath {
     public String simplifyPath(String path) {
@@ -11,17 +9,19 @@ public class SimplifyPath {
         String[] strs = path.split("/");
         for (String str : strs) {
             if (str.equals("..")) {
-                stack.pollLast();
+                if (!stack.isEmpty()) {
+                    stack.pop();
+                }
             } else if (!str.equals(".") && !str.equals("")) {
-                stack.offerLast(str);
+                stack.push(str);
             }
         }
         if (stack.isEmpty()) {
             return "/";
         }
         StringBuilder sb = new StringBuilder();
-        for (String s : stack) {
-            sb.append("/").append(s);
+        while (!stack.isEmpty()) {
+            sb.append("/").append(stack.pollLast());
         }
         return sb.toString();
     }
