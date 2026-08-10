@@ -6,8 +6,10 @@ public class BinarySearch {
         int l = 0, r = nums.length;
         while (l < r) {
             int m = l + ((r - l) >>> 1);
-            if (nums[m] < target) l = m + 1;
-            else r = m;
+            if (nums[m] < target)
+                l = m + 1;
+            else
+                r = m;
         }
         return l;
     }
@@ -17,9 +19,12 @@ public class BinarySearch {
         int l = 0, r = nums.length - 1;
         while (l <= r) {
             int m = l + ((r - l) >>> 1);
-            if (nums[m] == target) return m;
-            if (nums[m] < target) l = m + 1;
-            else r = m - 1;
+            if (nums[m] == target)
+                return m;
+            if (nums[m] < target)
+                l = m + 1;
+            else
+                r = m - 1;
         }
         return -1;
     }
