@@ -19,4 +19,12 @@ public class BinarySearch {
 
         return -1;
     }
+
+    public static void main(String[] args) {
+        BinarySearch solution = new BinarySearch();
+        int[] nums = {-1, 0, 3, 5, 9, 12};
+        int target = 9;
+        int result = solution.search(nums, target);
+        System.out.println(result); // Output: 4
+    }
 }
