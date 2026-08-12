@@ -9,18 +9,18 @@ public class MedianOfTwoSortedArrays {
 
             int x = nums1.length;
             int y = nums2.length;
-            int low = 0;
-            int high = x;
+            int l = 0;
+            int r = x;
 
-            while (low <= high) {
-                int partitionX = low + (high - low) / 2;
-                int partitionY = (x + y + 1) / 2 - partitionX;
+            while (l <= r) {
+                int midX = l + (r - l) / 2;
+                int midY = (x + y + 1) / 2 - midX;
 
-                int maxLeftX = (partitionX == 0) ? Integer.MIN_VALUE : nums1[partitionX - 1];
-                int minRightX = (partitionX == x) ? Integer.MAX_VALUE : nums1[partitionX];
+                int maxLeftX = (midX == 0) ? Integer.MIN_VALUE : nums1[midX - 1];
+                int minRightX = (midX == x) ? Integer.MAX_VALUE : nums1[midX];
 
-                int maxLeftY = (partitionY == 0) ? Integer.MIN_VALUE : nums2[partitionY - 1];
-                int minRightY = (partitionY == y) ? Integer.MAX_VALUE : nums2[partitionY];
+                int maxLeftY = (midY == 0) ? Integer.MIN_VALUE : nums2[midY - 1];
+                int minRightY = (midY == y) ? Integer.MAX_VALUE : nums2[midY];
 
                 if (maxLeftX <= minRightY && maxLeftY <= minRightX) {
                     if ((x + y) % 2 == 0) {
@@ -30,9 +30,9 @@ public class MedianOfTwoSortedArrays {
                         return (double) Math.max(maxLeftX, maxLeftY);
                     }
                 } else if (maxLeftX > minRightY) {
-                    high = partitionX - 1;
+                    r = midX - 1;
                 } else {
-                    low = partitionX + 1;
+                    l = midX + 1;
                 }
             }
 
