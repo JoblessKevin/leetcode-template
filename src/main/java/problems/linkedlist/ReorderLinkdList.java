@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReorderLinkdList {
-    static class ListNode {
+    public static class ListNode {
         int val;
         ListNode next;
 
@@ -20,7 +20,7 @@ public class ReorderLinkdList {
         }
     }
 
-    class BruteForce {
+    public static class BruteForce {
         public void reorderList(ListNode head) {
             // 1. 把所有節點依序裝進 ArrayList 裡面
             List<ListNode> nodes = new ArrayList<>();
@@ -54,7 +54,7 @@ public class ReorderLinkdList {
         }
     }
 
-    public class Recursive {
+    public static class Recursive {
         public void reorderList(ListNode head) {
             head = rec(head, head.next);
         }
@@ -82,7 +82,7 @@ public class ReorderLinkdList {
         }
     }
 
-    class ReverseAndMerge {
+    public static class ReverseAndMerge {
         public void reorderList(ListNode head) {
             if (head == null || head.next == null)
                 return;
@@ -139,7 +139,7 @@ public class ReorderLinkdList {
 
     /** ========== Test Case ========== */
     public static void main(String[] args) {
-        ReorderLinkdList sol = new ReorderLinkdList();
+        ReverseAndMerge sol = new ReverseAndMerge();
 
         // 測資 1: 偶數長度
         ListNode head1 = buildList(new int[] {1, 2, 3, 4});
