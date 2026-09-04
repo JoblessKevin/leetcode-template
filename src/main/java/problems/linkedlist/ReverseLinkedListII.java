@@ -4,104 +4,64 @@ public class ReverseLinkedListII {
     public static class ListNode {
         int val;
         ListNode next;
+
         ListNode() {}
-        ListNode(int val) { this.val = val; }
-        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
     }
 
-    public ListNode reverseBetween(ListNode head, int left, int right) {
-        if (head == null || left == right) return head;
+    public class Iteration {
+        public ListNode reverseBetween(ListNode head, int left, int right) {
+            ListNode dummy = new ListNode(0);
+            dummy.next = head;
+            ListNode leftPrev = dummy;
+            ListNode curr = head;
 
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
+            for (int i = 0; i < left - 1; i++) {
+                leftPrev = curr;
+                curr = curr.next;
+            }
 
-        ListNode before = dummy;
-        for (int i = 0; i < left - 1; i++) {
-            before = before.next;
+            ListNode prev = null;
+            for (int i = 0; i < right - left + 1; i++) {
+                ListNode tmpNext = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = tmpNext;
+            }
+
+            leftPrev.next.next = curr;
+            leftPrev.next = prev;
+
+            return dummy.next;
         }
-
-        ListNode start = before.next;
-        ListNode curr = start;
-        ListNode prev = null;
-
-        for (int i = left; i <= right; i++) {
-            ListNode temp = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = temp;
-        }
-
-        before.next = prev;
-        start.next = curr;
-
-        return dummy.next;
     }
 
     public static void main(String[] args) {
-        ReverseLinkedListII solver = new ReverseLinkedListII();
+        ReverseLinkedListII reverseLinkedListII = new ReverseLinkedListII();
+        Iteration solution = reverseLinkedListII.new Iteration();
 
-        // ======== Test case 1 ========
-        ListNode list1 = buildList(1, 2, 3, 4, 5);
-        System.out.println("Before reverse:");
-        printList(list1);
+        ListNode head = new ListNode(1, new ListNode(2,
+                                        new ListNode(3, new ListNode(4, new ListNode(5)))));
+        int left = 2;
+        int right = 4;
 
-        ListNode result1 = solver.reverseBetween(list1, 2, 4);
-        System.out.println("After reverse (left=2, right=4):");
-        printList(result1);
-        System.out.println("----------------------------");
-
-        // ======== Test case 2 ========
-        ListNode list2 = buildList(1, 2, 3);
-        System.out.println("Before reverse:");
-        printList(list2);
-
-        ListNode result2 = solver.reverseBetween(list2, 1, 3);
-        System.out.println("After reverse (left=1, right=3):");
-        printList(result2);
+        ListNode result = solution.reverseBetween(head, left, right);
+        printList(result);
     }
 
-    /** Tools */
-
-    public static ListNode buildList(int... vals) {
-        ListNode dummy = new ListNode(0);
-        ListNode curr = dummy;
-        for (int v : vals) {
-            curr.next = new ListNode(v);
-            curr = curr.next;
-        }
-        return dummy.next;
-    }
-
-    public static void printList(ListNode head) {
-        ListNode curr = head;
-        while (curr != null) {
-            System.out.print(curr.val);
-            if (curr.next != null) System.out.print(" -> ");
-            curr = curr.next;
+    private static void printList(ListNode head) {
+        while (head != null) {
+            System.out.print(head.val + " ");
+            head = head.next;
         }
         System.out.println();
     }
-
-    /** Deprecated */
-    // public ListNode reverseBetween(ListNode head, int left, int right) {
-//        ListNode dummy = new ListNode(0);
-//        dummy.next = head;
-//
-//        ListNode prev = dummy;
-//        for (int i = 0; i < left - 1; i++) {
-//            prev = prev.next;
-//        }
-//
-//        ListNode curr = prev.next;
-//        ListNode next = null;
-//
-//        for (int i = 0; i < right - left; i++) {
-//            next = curr.next;
-//            curr.next = next.next;
-//            next.next = prev.next;
-//            prev.next = next;
-//        }
-//
-//        return dummy.next;
-//    }
 }

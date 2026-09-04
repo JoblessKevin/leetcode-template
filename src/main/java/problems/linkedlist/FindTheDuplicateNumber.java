@@ -1,6 +1,9 @@
 package problems.linkedlist;
 
 public class FindTheDuplicateNumber {
+    /**
+     * Floyd's Tortoise and Hare Algorithm
+     */
     public class LinkedListCycle {
         public int findDuplicate(int[] nums) {
             int slow = 0, fast = 0;
@@ -23,6 +26,9 @@ public class FindTheDuplicateNumber {
         }
     }
 
+    /**
+     * Pigeonhole Principle
+     */
     public class BinarySearch {
         public int findDuplicate(int[] nums) {
             int n = nums.length;
@@ -48,27 +54,33 @@ public class FindTheDuplicateNumber {
         }
     }
 
-    public class BitManipulation {
+    class BitManipulation {
         public int findDuplicate(int[] nums) {
-            int n = nums.length;
             int res = 0;
-            for (int b = 0; b < 32; b++) {
-                int x = 0, y = 0;
-                int mask = 1 << b;
+            int n = nums.length;
+
+            for (int i = 0; i < 32; i++) {
+                int bit = (1 << i);
+                int cnt1 = 0;
+                int cnt2 = 0;
+
+                for (int k = 1; k < n; k++) {
+                    if ((k & bit) > 0) {
+                        cnt1++;
+                    }
+                }
+
                 for (int num : nums) {
-                    if ((num & mask) != 0) {
-                        x++;
+                    if ((num & bit) > 0) {
+                        cnt2++;
                     }
                 }
-                for (int num = 1; num < n; num++) {
-                    if ((num & mask) != 0) {
-                        y++;
-                    }
-                }
-                if (x > y) {
-                    res |= mask;
+
+                if (cnt2 > cnt1) {
+                    res += bit;
                 }
             }
+
             return res;
         }
     }
