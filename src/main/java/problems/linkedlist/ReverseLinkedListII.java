@@ -17,6 +17,7 @@ public class ReverseLinkedListII {
         }
     }
 
+    /** leftPrev (head ListNode) -> prev -> curr */
     public class Iteration {
         public ListNode reverseBetween(ListNode head, int left, int right) {
             ListNode dummy = new ListNode(0);
@@ -31,10 +32,10 @@ public class ReverseLinkedListII {
 
             ListNode prev = null;
             for (int i = 0; i < right - left + 1; i++) {
-                ListNode tmpNext = curr.next;
+                ListNode temp = curr.next;
                 curr.next = prev;
                 prev = curr;
-                curr = tmpNext;
+                curr = temp;
             }
 
             leftPrev.next.next = curr;
