@@ -1,5 +1,7 @@
 package problems.linkedlist;
 
+import java.util.PriorityQueue;
+
 public class MergeKSortedLists {
     public static class ListNode {
         int val;
@@ -17,30 +19,63 @@ public class MergeKSortedLists {
         }
     }
 
-    public ListNode mergeKLists_iteration(ListNode[] lists) {
-        ListNode res = new ListNode(0);
-        ListNode cur = res;
+    public static class MinHeap {
+        public static ListNode mergeKLists(ListNode[] lists) {
+            if (lists == null || lists.length == 0)
+                return null;
 
-        while (true) {
-            int minNode = -1;
-            for (int i = 0; i < lists.length; i++) {
-                if (lists[i] == null) {
-                    continue;
-                }
-                if (minNode == -1 || lists[minNode].val > lists[i].val) {
-                    minNode = i;
+            ListNode dummy = new ListNode(0);
+            ListNode curr = dummy;
+
+            PriorityQueue<ListNode> minHeap = new PriorityQueue<>((a, b) -> a.val - b.val);
+
+            for (ListNode node : lists) {
+                if (node != null) {
+                    minHeap.offer(node);
                 }
             }
 
-            if (minNode == -1) {
-                break;
+            while (!minHeap.isEmpty()) {
+                ListNode smallest = minHeap.poll();
+
+                curr.next = smallest;
+                curr = curr.next;
+
+                if (smallest.next != null) {
+                    minHeap.offer(smallest.next);
+                }
             }
-            cur.next = lists[minNode];
-            lists[minNode] = lists[minNode].next;
-            cur = cur.next;
+
+            return dummy.next;
         }
+    }
 
-        return res.next;
+    public static class Iteration {
+        public static ListNode mergeKLists(ListNode[] lists) {
+            ListNode res = new ListNode(0);
+            ListNode cur = res;
+
+            while (true) {
+                int minNode = -1;
+                for (int i = 0; i < lists.length; i++) {
+                    if (lists[i] == null) {
+                        continue;
+                    }
+                    if (minNode == -1 || lists[minNode].val > lists[i].val) {
+                        minNode = i;
+                    }
+                }
+
+                if (minNode == -1) {
+                    break;
+                }
+                cur.next = lists[minNode];
+                lists[minNode] = lists[minNode].next;
+                cur = cur.next;
+            }
+
+            return res.next;
+        }
     }
 
     public static void main(String[] args) {
@@ -58,7 +93,7 @@ public class MergeKSortedLists {
 
         ListNode[] lists = {l1, l2, l3, l4};
 
-        ListNode result = s.mergeKLists_iteration(lists);
+        ListNode result = s.new MinHeap().mergeKLists(lists);
         printList(result);
     }
 
