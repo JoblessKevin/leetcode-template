@@ -49,36 +49,8 @@ public class ReorderLinkdList {
                 right--; // 右指標往左移
             }
 
-            // 3. 別忘了把最後一個節點的 next 設為 null，避免形成環！
-            nodes.get(left).next = null;
-        }
-    }
-
-    public static class Recursive {
-        public void reorderList(ListNode head) {
-            head = rec(head, head.next);
-        }
-
-        private ListNode rec(ListNode root, ListNode cur) {
-            if (cur == null) {
-                return root;
-            }
-
-            root = rec(root, cur.next);
-            if (root == null) {
-                return null;
-            }
-
-            ListNode tmp = null;
-            if (root == cur || root.next == cur) {
-                cur.next = null;
-            } else {
-                tmp = root.next;
-                root.next = cur;
-                cur.next = tmp;
-            }
-
-            return tmp;
+            // 3. 別忘了把最後一個節點的 next 設為 null，避免形成環！(left 或是 right 一樣意思)
+            nodes.get(left).next = null; // nodes.get(right).next = null;
         }
     }
 
@@ -134,6 +106,35 @@ public class ReorderLinkdList {
                 list1 = list1Next;
                 list2 = list2Next;
             }
+        }
+    }
+
+    /** ========== 遞迴法不推薦在考試中寫，非常不直觀 ========== */
+    public static class Recursive {
+        public void reorderList(ListNode head) {
+            head = rec(head, head.next);
+        }
+
+        private ListNode rec(ListNode root, ListNode curr) {
+            if (curr == null) {
+                return root;
+            }
+
+            root = rec(root, curr.next);
+            if (root == null) {
+                return null;
+            }
+
+            ListNode temp = null;
+            if (root == curr || root.next == curr) {
+                curr.next = null;
+            } else {
+                temp = root.next;
+                root.next = curr;
+                curr.next = temp;
+            }
+
+            return temp;
         }
     }
 

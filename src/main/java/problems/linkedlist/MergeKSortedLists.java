@@ -79,47 +79,34 @@ public class MergeKSortedLists {
     }
 
     public static void main(String[] args) {
-        MergeKSortedLists s = new MergeKSortedLists();
+        ListNode list1 = new ListNode(1, new ListNode(4, new ListNode(5)));
+        ListNode list2 = new ListNode(1, new ListNode(3, new ListNode(4)));
+        ListNode list3 = new ListNode(2, new ListNode(6));
 
-        // 測試用 list
-        // list1: 1 -> 4 -> 5
-        // list2: 1 -> 3 -> 4
-        // list3: 2 -> 6
-        // list4: null
-        ListNode l1 = buildList(new int[] {1, 4, 5});
-        ListNode l2 = buildList(new int[] {1, 3, 4});
-        ListNode l3 = buildList(new int[] {2, 6});
-        ListNode l4 = null; // 測試 null 處理
+        ListNode[] lists = {list1, list2, list3};
 
-        ListNode[] lists = {l1, l2, l3, l4};
+        // Merge using MinHeap
+        ListNode mergedMinHeap = MinHeap.mergeKLists(lists);
+        System.out.print("Merged using MinHeap: ");
+        printList(mergedMinHeap);
 
-        ListNode result = s.new MinHeap().mergeKLists(lists);
-        printList(result);
+        // Reset the lists for the next merge
+        list1 = new ListNode(1, new ListNode(4, new ListNode(5)));
+        list2 = new ListNode(1, new ListNode(3, new ListNode(4)));
+        list3 = new ListNode(2, new ListNode(6));
+        lists = new ListNode[] {list1, list2, list3};
+
+        // Merge using Iteration
+        ListNode mergedIteration = Iteration.mergeKLists(lists);
+        System.out.print("Merged using Iteration: ");
+        printList(mergedIteration);
     }
 
-    // ----------------------------
-    // 工具方法 - 建立鏈結串列
-    // ----------------------------
-    private static ListNode buildList(int[] arr) {
-        if (arr == null || arr.length == 0)
-            return null;
-        ListNode head = new ListNode(arr[0]);
-        ListNode cur = head;
-        for (int i = 1; i < arr.length; i++) {
-            cur.next = new ListNode(arr[i]);
-            cur = cur.next;
-        }
-        return head;
-    }
-
-    // ----------------------------
-    // 工具方法 - 列印鏈結串列
-    // ----------------------------
     private static void printList(ListNode head) {
         while (head != null) {
-            System.out.print(head.val + " -> ");
+            System.out.print(head.val + " ");
             head = head.next;
         }
-        System.out.println("null");
+        System.out.println();
     }
 }

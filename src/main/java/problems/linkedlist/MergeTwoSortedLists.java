@@ -17,6 +17,17 @@ public class MergeTwoSortedLists {
         }
     }
 
+    /**
+     * @formatter:off
+     * 這個方法會直接修改原本 list1 和 list2 的內容
+     * Input: list1 = [1,2,4], list2 = [1,3,4]
+     * list1: 1 -> 2 -> 4
+     * list2: 1 -> 3 -> 4
+     * Output: 1 -> 1 -> 2 -> 3 -> 4 -> 4
+     * list1: 1 -> 1 -> 2 -> 3 -> 4 -> 4
+     * list2: 1 -> 2 -> 3 -> 4 -> 4
+     * @formatter:on
+     */
     class Recursive {
         public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
             if (list1 == null)
@@ -64,8 +75,8 @@ public class MergeTwoSortedLists {
         MergeTwoSortedLists mergeTwoSortedLists = new MergeTwoSortedLists();
         ListNode list1 = new ListNode(1, new ListNode(2, new ListNode(4)));
         ListNode list2 = new ListNode(1, new ListNode(3, new ListNode(4)));
-        // ListNode mergedHead = mergeTwoSortedLists.new Iterative().mergeTwoLists(list1, list2);
-        ListNode mergedHead = mergeTwoSortedLists.new Recursive().mergeTwoLists(list1, list2);
+        ListNode mergedHead = mergeTwoSortedLists.new Iterative().mergeTwoLists(list1, list2);
+        // ListNode mergedHead = mergeTwoSortedLists.new Recursive().mergeTwoLists(list1, list2);
         while (mergedHead != null) {
             System.out.print(mergedHead.val + " ");
             mergedHead = mergedHead.next;
