@@ -46,8 +46,8 @@ public class ApplyOperationsonArraytoMaximizeSumofSquares {
         int result = solution.maxSum(nums, k); // 261
         System.out.println("1. Max Sum of Squares: " + result);
 
-        List<Integer> nums2 = List.of(2, 6, 5, 8);
-        int k2 = 2;
+        List<Integer> nums2 = List.of(4, 5, 4, 7);
+        int k2 = 3;
         int result2 = solution.maxSum(nums2, k2); // 90
         System.out.println("2. Max Sum of Squares: " + result2);
     }
