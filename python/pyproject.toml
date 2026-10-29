@@ -1,0 +1,23 @@
+[project]
+name = "leetcode-template"
+version = "0.1.0"
+requires-python = ">=3.13"
+
+[dependency-groups]
+dev = ["pytest>=9.2", "ruff>=0.17"]
+
+[tool.pytest.ini_options]
+# Solutions and their tests live in the same file, so collect every .py file
+python_files = ["*.py"]
+testpaths = ["problems", "templates"]
+pythonpath = ["."]
+addopts = ["--import-mode=importlib"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+# Allow `l` / `r` pointers, which are idiomatic in algorithm code
+ignore = ["E741"]

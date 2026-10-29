@@ -50,3 +50,20 @@ Thumbs.db
 *.swp
 *.swo
 *~
+# VS Code Java extension output
+bin/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# C++ / CMake
+cpp/build/
+cmake-build-*/
+compile_commands.json
+*.o
+*.obj
+*.exe

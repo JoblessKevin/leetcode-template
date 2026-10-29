@@ -22,6 +22,11 @@ dependencies {
     testAnnotationProcessor 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
 }
 
+// Force UTF-8 so Chinese comments compile on Windows (default encoding there is cp950)
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
 test {
     useJUnitPlatform()
 }

@@ -1,9 +1,11 @@
-name: ci
+name: java
 
 on:
   push:
     branches: [ main, master ]
+    paths: [ 'java/**', '.github/workflows/java.yml' ]
   pull_request:
+    paths: [ 'java/**', '.github/workflows/java.yml' ]
   workflow_dispatch:
 
 permissions:
@@ -13,26 +15,30 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: java
+
 jobs:
   test:
-    # Cloud Server of the github actions
     runs-on: ubuntu-latest
     steps:
       # Checkout source code
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Set up Java 23 (Temurin distribution) with Gradle cache enabled
-      - name: Set up Java 23 (Temurin)
+      # Set up Java 21 (Temurin) to match the toolchain in build.gradle
+      - name: Set up Java 21 (Temurin)
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '23'
-          cache: gradle
+          java-version: '21'
 
-      # Install and configure Gradle
+      # Install and configure Gradle (with cache)
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v3
+        with:
+          build-root-directory: java
 
       # Run unit tests
       - name: Run tests

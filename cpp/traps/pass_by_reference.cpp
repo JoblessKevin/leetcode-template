@@ -1,6 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
 /**
  * C++ 版本的 Pass By Reference 實驗
@@ -11,7 +11,7 @@
 void test(std::vector<std::string>& list) {
     // 在 C++ 中，這樣寫會直接「清空並重新賦值」原本的那台電視
     // 而不是只改掉影印的遙控器
-    list = {"Modified!"}; 
+    list = {"Modified!"};
 }
 
 int main() {
