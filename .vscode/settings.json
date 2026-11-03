@@ -11,8 +11,8 @@
         "editor.defaultFormatter": "redhat.java"
     },
 
-    // Python
-    "python.defaultInterpreterPath": "${workspaceFolder}/python/.venv/Scripts/python.exe",
+    // Python (interpreter path is OS-specific: pick python/.venv via "Python: Select Interpreter";
+    // Codespaces sets it in .devcontainer/devcontainer.json)
     "python.testing.pytestEnabled": true,
     "python.testing.cwd": "${workspaceFolder}/python",
     "python.testing.pytestArgs": ["."],
@@ -23,7 +23,11 @@
     // C++
     "cmake.sourceDirectory": "${workspaceFolder}/cpp",
     "cmake.buildDirectory": "${workspaceFolder}/cpp/build",
-    "clangd.arguments": ["--compile-commands-dir=${workspaceFolder}/cpp/build"],
+    "clangd.arguments": [
+        "--compile-commands-dir=${workspaceFolder}/cpp/build",
+        // Let clangd ask g++ (MinGW on Windows, GCC in Codespaces) for its standard header paths
+        "--query-driver=**/g++*"
+    ],
     "[cpp]": {
         "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
     }

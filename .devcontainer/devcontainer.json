@@ -1,0 +1,34 @@
+{
+    "name": "leetcode-template",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+    "features": {
+        // Java 21 to match the toolchain in java/build.gradle (Gradle comes from the wrapper)
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "21",
+            "jdkDistro": "tem"
+        },
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "3.13"
+        }
+    },
+
+    // C++ toolchain, uv, pinned clang-format, and the Python dev venv
+    "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "ms-python.python",
+                "charliermarsh.ruff",
+                "llvm-vs-code-extensions.vscode-clangd",
+                "ms-vscode.cmake-tools"
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "${containerWorkspaceFolder}/python/.venv/bin/python",
+                "cmake.generator": "Ninja"
+            }
+        }
+    }
+}
