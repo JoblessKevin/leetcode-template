@@ -54,6 +54,8 @@ ctest --test-dir build --output-on-failure
 ## 筆記
 
 - [Bit Manipulation](notes/bit.md)
+- [Java → Python 轉換筆記](notes/java-to-python.md)
+- [Python 學習筆記](notes/python.md)
 
 ## design pattern
 

@@ -8,5 +8,6 @@ pacman -S --needed mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake mingw-w
 ## Protable
 https://winlibs.com/
 (往下滾，選擇 Win64 (without LLVM/Clang/LLD/LLDB) Zip archive)
+
 ## Remote
 GitHub Codespaces

@@ -1,3 +1,5 @@
+# Time Complexity: O(n)
+# Space Complexity: O(n)
 class Solution:
     def twoSum(self, nums: list[int], target: int) -> list[int]:
         seen: dict[int, int] = {}

@@ -3,7 +3,7 @@ package problems.array;
 import java.util.HashMap;
 import java.util.Map;
 
-public class P0001TwoSum {
+public class TwoSum {
     public int[] twoSum(int[] nums, int target) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
@@ -18,7 +18,7 @@ public class P0001TwoSum {
     }
 
     public static void main(String[] args) {
-        P0001TwoSum solver = new P0001TwoSum();
+        TwoSum solver = new TwoSum();
 
         // 測試案例
         int[] nums = {2, 7, 11, 15};
