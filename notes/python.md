@@ -823,7 +823,7 @@ c["z"] += 1         # 可以直接累加，不用先檢查 key 存不存在
 | `defaultdict(int)`：`d[k]` | 回傳 `0` | **會**（查一次就多一個 key） |
 | `Counter`：`c[k]` | 回傳 `0` | 不會 |
 
-> `defaultdict(int)` 也能用來計數，但光是「查詢」就會新增 key，這在需要比較 `len(d)` 或走訪所有 key 時，可能造成 bug。
+> `defaultdict(int)` 也能用來計數，但光是「查詢」就會新增 key，這在需要比較 `len(d)` 或走訪所有 key 時，可能造成 bug。`defaultdict` 的完整說明見第 8 節。
 
 ---
 
@@ -1244,3 +1244,205 @@ rows[0][0] = 99     # ✗ TypeError：tuple 不能修改
 ### G. 一句話總結
 
 > **`zip` 依照位置把多個序列並排走訪，以最短的為準；`zip(*rows)` 則是一次取出「一直行」。**
+
+---
+
+## 8. `defaultdict`：會自動建立預設值的 dict
+
+### A. 概念
+
+一般的 `dict` 讀取不存在的 key 時會拋出 `KeyError`。`defaultdict` 則會**自動建立一個預設值、存進去，再回傳給你**：
+
+```python
+from collections import defaultdict
+
+d = {}
+d["a"].append(1)            # ✗ KeyError: 'a'
+
+d = defaultdict(list)
+d["a"].append(1)            # ✓ "a" 不存在 → 自動建立 [] → 再 append(1)
+d                           # defaultdict(<class 'list'>, {'a': [1]})
+```
+
+它跟 `Counter` 一樣是 `dict` 的子類別，所以 dict 能用的操作（`d.items()`、`k in d`、`len(d)`…）都能用。
+
+#### 對照 Java
+
+```java
+Map<String, List<Integer>> map = new HashMap<>();
+map.computeIfAbsent("a", k -> new ArrayList<>()).add(1);    // Java 8+ 的寫法
+```
+
+```python
+d = defaultdict(list)
+d["a"].append(1)                                            # Python：不用每次都寫「不存在就建立」
+```
+
+---
+
+### B. 傳進去的是「工廠」，不是預設值
+
+`defaultdict(x)` 的 `x` 是一個**可以呼叫的東西**（函式或型別）。每次遇到不存在的 key，它就會呼叫 `x()`，把結果當成這個 key 的值：
+
+| 寫法 | 遇到新 key 時呼叫 | 預設值 | 用途 |
+| :--- | :--- | :--- | :--- |
+| `defaultdict(int)` | `int()` | `0` | 計數、累加 |
+| `defaultdict(list)` | `list()` | `[]` | 分組、鄰接表 |
+| `defaultdict(set)` | `set()` | `set()` | 分組並去除重複 |
+| `defaultdict(str)` | `str()` | `""` | 字串累加 |
+| `defaultdict(float)` | `float()` | `0.0` | 小數累加 |
+| `defaultdict(lambda: -1)` | 自訂的函式 | `-1` | 自訂預設值 |
+| `defaultdict(lambda: float("inf"))` | 自訂的函式 | `inf` | 最短距離（Dijkstra） |
+
+```python
+defaultdict([])             # ✗ TypeError: first argument must be callable or None
+defaultdict(0)              # ✗ 同上：要傳「怎麼產生 0」，而不是 0 本身
+defaultdict(int)            # ✓ int() 會回傳 0
+defaultdict(lambda: 0)      # ✓ 效果相同
+```
+
+> 為什麼要傳工廠，而不是直接傳預設值？因為如果傳的是 `[]`，所有 key 就會共用**同一個** list（跟 `dict.fromkeys(keys, [])` 的陷阱一樣，見第 2 節 E）。傳工廠的話，每個新 key 都會呼叫一次 `list()`，拿到**各自獨立**的 list。
+
+---
+
+### C. 跟其他寫法的比較
+
+同樣是「key 不存在時給一個預設值」，有好幾種寫法：
+
+```python
+# 1. dict + get：只讀取，不會新增 key
+count[x] = count.get(x, 0) + 1
+
+# 2. dict + setdefault：key 不存在時新增，並回傳那個值
+groups.setdefault(key, []).append(x)
+
+# 3. defaultdict：最簡潔
+groups = defaultdict(list)
+groups[key].append(x)
+
+# 4. Counter：計數專用（見第 5 節）
+count = Counter(nums)
+```
+
+| 寫法 | 讀取不存在的 key | 適合的情況 |
+| :--- | :--- | :--- |
+| `dict` + `d[k]` | ❌ `KeyError` | key 一定存在 |
+| `dict` + `d.get(k, 預設值)` | 回傳預設值，**不新增** key | 只是查詢 |
+| `dict` + `d.setdefault(k, 預設值)` | 新增 key 並回傳 | 偶爾需要，不想換掉 dict 型別 |
+| `defaultdict(工廠)` + `d[k]` | 新增 key 並回傳 | **分組、鄰接表**這類需要反覆「不存在就建立」的情況 |
+| `Counter` + `c[k]` | 回傳 `0`，**不新增** key | **計數** |
+
+> 選擇原則：**計數用 `Counter`，分組用 `defaultdict(list)`**。`defaultdict(int)` 也能計數，但 `Counter` 多了 `most_common()`、相加相減這些計數專用的功能，而且查詢時不會新增 key。
+
+---
+
+### D. 刷題常見用法
+
+#### 1. 分組（Group Anagrams）
+
+```python
+groups = defaultdict(list)
+for s in ["eat", "tea", "tan", "ate", "nat", "bat"]:
+    groups[tuple(sorted(s))].append(s)    # 排序後相同的字串，放在同一組
+
+list(groups.values())    # [['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]
+```
+
+#### 2. 圖的鄰接表（Course Schedule、Clone Graph）
+
+```python
+graph = defaultdict(list)
+for course, pre in prerequisites:
+    graph[pre].append(course)             # 不用先初始化每個節點
+
+for neighbor in graph[node]:              # 沒有鄰居的節點會得到 []，迴圈直接跳過
+    ...
+```
+
+對照 Java：
+
+```java
+Map<Integer, List<Integer>> graph = new HashMap<>();
+for (int[] p : prerequisites) {
+    graph.computeIfAbsent(p[1], k -> new ArrayList<>()).add(p[0]);
+}
+for (int neighbor : graph.getOrDefault(node, List.of())) { ... }
+```
+
+#### 3. 分組並去除重複
+
+```python
+seen = defaultdict(set)
+seen[key].add(x)                          # 同一個 key 底下的值不會重複
+```
+
+#### 4. 巢狀的 defaultdict（二維計數、帶權重的圖）
+
+```python
+weight = defaultdict(lambda: defaultdict(int))
+weight["u"]["v"] += 1                     # 兩層都會自動建立
+```
+
+> 第二層要用 `lambda` 包起來：`defaultdict(defaultdict(int))` 會出錯，因為 `defaultdict(int)` 是一個物件，不是工廠。
+
+#### 5. 一行寫出 Trie（字典樹）
+
+```python
+def Trie():
+    return defaultdict(Trie)              # 每個節點都是「子節點會自動建立」的 defaultdict
+
+root = Trie()
+node = root
+for ch in "app":
+    node = node[ch]                       # 路徑上的節點不存在時，會自動建立
+node["#"] = True                          # 用 "#" 標記單字結尾
+```
+
+> 這是很巧妙的寫法，適合快速實作。正式一點的 Trie 可以參考 [java/src/main/java/templates/trie/Trie.java](../java/src/main/java/templates/trie/Trie.java) 的類別寫法。
+
+---
+
+### E. 陷阱 (Pitfalls)
+
+#### 1. 「讀取」也會新增 key
+
+這是 `defaultdict` 最容易出 bug 的地方：
+
+```python
+count = defaultdict(int)
+if count["x"] > 0:        # 只是想檢查而已
+    ...
+len(count)                # 1：「x」已經被加進去了，值是 0
+```
+
+**只想檢查 key 存不存在時，請用 `in`**，它不會新增 key：
+
+```python
+if "x" in count: ...      # ✓ 不會新增
+count.get("x")            # ✓ 不會新增（但回傳的是 None，不會用工廠的預設值）
+```
+
+會受影響的情況：用 `len(d)` 判斷「有幾種不同的 key」、走訪 `d` 的所有 key、或是把 `d` 回傳給 LeetCode 時多出不該有的 key。
+
+#### 2. 走訪時讀取不存在的 key
+
+```python
+for k in d:
+    d[k + "x"]            # ✗ RuntimeError: dictionary changed size during iteration
+```
+
+讀取不存在的 key 會**新增** key，等於在走訪的同時修改了 dict 的大小。需要這樣做時，先用 `list(d)` 複製一份 key 再走訪。
+
+#### 3. 轉回一般的 dict
+
+```python
+plain = dict(groups)      # 轉成一般的 dict：之後讀取不存在的 key 會 KeyError
+```
+
+`defaultdict` 可以直接用 `==` 跟一般 dict 比較，也能直接回傳給 LeetCode，通常不需要轉換。只有在你**希望之後的讀取不要再自動新增 key** 時，才需要轉回一般的 dict。
+
+---
+
+### F. 一句話總結
+
+> **`defaultdict(工廠)` 遇到不存在的 key 會呼叫工廠建立預設值；分組、鄰接表用它最方便，但要記得「讀取也會新增 key」。**
